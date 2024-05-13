@@ -333,22 +333,22 @@ public class RewardPage extends TemplatePage {
         String rewardResult = reward.getCommands() == null ? "获取当前物品" : "执行以下指令";
         switch (reward.getType()) {
             case REWARD_LEVEL:
-                ItemUtils.addLore(item, String.format("§f[手册等级达到%s]%s", reward.getNum() / 3, rewardResult));
+                ItemUtils.addLore(item, String.format("§f[§b手册等级达到%s§f]%s", reward.getNum() / 3, rewardResult));
                 break;
             case REWARD_SIGN:
-                ItemUtils.addLore(item, "§f每日签到");
+                ItemUtils.addLore(item, String.format("§f[§b每日签到§f]%s", rewardResult));
                 break;
             case REWARD_SERIES_SIGN:
-                ItemUtils.addLore(item, String.format("§f[连续签到%s天]%s", reward.getNum(), rewardResult));
+                ItemUtils.addLore(item, String.format("§f[§b连续签到%s天§f]%s", reward.getNum(), rewardResult));
                 break;
             case REWARD_CUMULATIVE_SIGN:
-                ItemUtils.addLore(item, String.format("§f[累计签到%s天]%s", reward.getNum(), rewardResult));
+                ItemUtils.addLore(item, String.format("§f[§b累计签到%s天§f]%s", reward.getNum(), rewardResult));
                 break;
             case REWARD_PLAYTIME:
-                ItemUtils.addLore(item, String.format("§f[当天在线%s]%s", TimeUtils.duration(reward.getNum()), rewardResult));
+                ItemUtils.addLore(item, String.format("§f[§b当天在线%s§f]%s", TimeUtils.duration(reward.getNum()), rewardResult));
                 break;
             case REWARD_SEASON_PLAYTIME:
-                ItemUtils.addLore(item, String.format("§f[周目总在线%s]%s", TimeUtils.duration(reward.getNum()), rewardResult));
+                ItemUtils.addLore(item, String.format("§f[§b周目总在线%s§f]%s", TimeUtils.duration(reward.getNum()), rewardResult));
                 break;
             default:
                 break;
