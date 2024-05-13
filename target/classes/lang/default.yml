@@ -1,0 +1,29 @@
+Version: '1.0-SNAPSHOT'
+
+PluginName: '§f§l[§0Activity§f§l]'
+Help: |
+  §e§m =                                             = 
+  §b/activity                          §f - 打开菜单
+  §b/activity rank                   §f - 活跃排行
+  §b/task add|set|remove            §f - 活动设置
+  §b/reward add|set|remove     §f - 奖品设置
+  §b/activity add [p] <a>           §f - 加活跃度
+  §b/activity chance [p] <a>           §f - 补签机会
+  §9其中§7p§9表示玩家，§7a§9表示数量，§7<>§9表示可选，§7[]§9表示必填
+  §9其中§7q§9表示问题题目，§7r§9表示正确的选项(A,B,C,...)，§7o§9表示选项(至少两个)
+  §e§m =                                             = 
+Reloading: '§e§l#§f配置文件重载中...'
+Reloaded: '§e§l#§f配置文件重载完成!'
+OnlyPlayerUse: '§c§l#§f该指令仅限玩家输入'
+NotPermission: '§c§l#§f你没有使用该指令的权限 §3%permission%'
+OfflinePlayer: '§c§l#§f玩家§3%player%§f不在线或不存在'
+
+SignRemind: '§6✦§f 每日奖励可以领取快去看看吧'
+SignSuccess: '§6✦§f成功签到，奖品已放入背包'
+
+PlaytimeRemind: '§6✦§f在线奖励可以领取快去看看吧'
+
+TitleExp: '手册'
+TitleProgress: '历练'
+TitleExchange: '兑换'
+TitleReward: '奖励配置'
