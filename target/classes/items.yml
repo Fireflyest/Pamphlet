@@ -1,9 +1,0 @@
-# 界面按钮
-exp:  
-  type: button
-  material: ENDER_CHEST
-  name: '&6&l周目手册'
-  lore: 
-  - '&7点击查看周目手册 todo'
-  action: 14
-  value: pamphlet.exp
