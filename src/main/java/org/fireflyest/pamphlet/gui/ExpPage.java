@@ -45,11 +45,9 @@ public class ExpPage extends TemplatePage {
 
         // 获取玩家数据
         Steve steve = service.selectSteveByUid(UUID.fromString(target));
-        if (steve == null) {
-            return asyncButtonMap;
-        }
+        
         // 获取所有奖励
-        Map<Integer, ItemStack> rewardMap = new HashMap<>();      
+        Map<Long, ItemStack> rewardMap = new HashMap<>();      
         for (Reward reward : service.selectRewardByType("level", Config.SEASON)) {
             ItemStack rewardItem = SerializationUtil.deserializeItemStack(reward.getItem());
             rewardMap.put(reward.getNum(), rewardItem);
@@ -74,29 +72,23 @@ public class ExpPage extends TemplatePage {
             asyncButtonMap.put(45 + j, levelButton);
 
             // 奖励
-            ItemStack slotItem0 = rewardMap.get(i * 3);
-            if (slotItem0 != null) {
-                asyncButtonMap.put(18 + j, slotItem0);
-            }
-            ItemStack slotItem1 = rewardMap.get(i * 3 + 1);
-            if (slotItem1 != null) {
-                asyncButtonMap.put(27 + j, slotItem1);
-            }
-           ItemStack slotItem2 = rewardMap.get(i * 3 + 2);
-           if (slotItem2 != null) {
-                asyncButtonMap.put(36 + j, slotItem2);
-           }
+            ItemStack slotItem0 = rewardMap.get(i * 3L);
+            if (slotItem0 != null) asyncButtonMap.put(18 + j, slotItem0);
+            ItemStack slotItem1 = rewardMap.get(i * 3 + 1L);
+            if (slotItem1 != null) asyncButtonMap.put(27 + j, slotItem1);
+           ItemStack slotItem2 = rewardMap.get(i * 3 + 2L);
+           if (slotItem2 != null) asyncButtonMap.put(36 + j, slotItem2);
         }
 
         // 右侧签到奖励
         String diaryTarget = target + "-" + TimeUtils.getLocalDate();
         Diary diary = service.selectDiaryByTarget(diaryTarget);
-        if (diary == null) {
-            diary = new Diary(target);
-            service.insertDiary(target);
-        }
+        // if (diary == null) {
+        //     diary = new Diary(target);
+        //     service.insertDiary(target);
+        // }
         ItemStack signItem;
-        if (!diary.isSign()) {
+        if (diary == null || !diary.isSign()) {
             signItem = new ButtonItemBuilder(Material.WRITABLE_BOOK)
                 .actionPlayerCommand("pamphlet sign")
                 .name("&f[&a点击签到&f]")

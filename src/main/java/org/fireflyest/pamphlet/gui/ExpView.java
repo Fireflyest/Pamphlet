@@ -3,6 +3,8 @@ package org.fireflyest.pamphlet.gui;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import org.fireflyest.craftgui.api.View;
 import org.fireflyest.craftgui.api.ViewGuide;
 import org.fireflyest.pamphlet.service.PamphletService;
@@ -23,12 +25,12 @@ public class ExpView implements View<ExpPage> {
      * target为玩家uuid
      */
     @Override
-    public ExpPage getFirstPage(String target) {
+    public ExpPage getFirstPage(@Nullable String target) {
         return pageMap.computeIfAbsent(target, k -> new ExpPage(target, service, guide));
     }
 
     @Override
-    public void removePage(String target) {
+    public void removePage(@Nullable String target) {
         // 
     }
     

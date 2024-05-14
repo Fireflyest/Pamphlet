@@ -13,6 +13,7 @@ import org.fireflyest.pamphlet.command.RewardCommand;
 import org.fireflyest.pamphlet.command.SignCommand;
 import org.fireflyest.pamphlet.data.Config;
 import org.fireflyest.pamphlet.data.PamphletYaml;
+import org.fireflyest.pamphlet.gui.EditView;
 import org.fireflyest.pamphlet.gui.ExchangeView;
 import org.fireflyest.pamphlet.gui.ExpView;
 import org.fireflyest.pamphlet.gui.ProgressView;
@@ -119,6 +120,7 @@ public final class Pamphlet extends JavaPlugin {
         guide.addView(VIEW_PROGRESS, new ProgressView(service));
         guide.addView(VIEW_EXCHANGE, new ExchangeView(service));
         guide.addView(VIEW_REWARD, new RewardView(service, guide));
+        guide.addView(VIEW_EDIT, new EditView(service, guide));
     }
     
     private void setupCommand() {

@@ -25,7 +25,7 @@ public class Reward {
 
     // 奖励位置
     @Column
-    private int num;
+    private long num;
 
     // 展示的物品
     @Column(dataType = "text")
@@ -70,11 +70,11 @@ public class Reward {
         this.season = season;
     }
 
-    public int getNum() {
+    public long getNum() {
         return num;
     }
 
-    public void setNum(int num) {
+    public void setNum(long num) {
         this.num = num;
     }
 

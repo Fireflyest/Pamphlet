@@ -37,12 +37,12 @@ public class RewardPage extends TemplatePage {
     private static final String SLOT_NAME = "&f[&a&l↓&f]";
     private static final String DRAG_TIP = "&7请拖拽物品至此";
 
-    private static final String REWARD_LEVEL = "level";
-    private static final String REWARD_SIGN = "sign";
-    private static final String REWARD_SERIES_SIGN = "series_sign";
-    private static final String REWARD_CUMULATIVE_SIGN = "cumulative_sign";
-    private static final String REWARD_PLAYTIME = "playtime";
-    private static final String REWARD_SEASON_PLAYTIME = "season_playtime";
+    public static final String REWARD_LEVEL = "level";
+    public static final String REWARD_SIGN = "sign";
+    public static final String REWARD_SERIES_SIGN = "series_sign";
+    public static final String REWARD_CUMULATIVE_SIGN = "cumulative_sign";
+    public static final String REWARD_PLAYTIME = "playtime";
+    public static final String REWARD_SEASON_PLAYTIME = "season_playtime";
 
     protected RewardPage(String target, PamphletService service, ViewGuide guide) {
         super(Language.TITLE_REWARD, target, 0, 54);
@@ -253,7 +253,7 @@ public class RewardPage extends TemplatePage {
      * 添加手册奖励
      */
     private void addLevelReward() {
-        Map<Integer, ItemStack> rewardMap = new HashMap<>();      
+        Map<Long, ItemStack> rewardMap = new HashMap<>();      
         // 手册奖励
         String type = REWARD_LEVEL;
         // 获取所有奖励
@@ -273,7 +273,7 @@ public class RewardPage extends TemplatePage {
             asyncButtonMap.put(45 + j, levelButton);
 
             // 奖励插槽
-            int num0 = i * 3;
+            long num0 = i * 3L;
             ItemStack slotItem0 = rewardMap.get(num0);
             if (slotItem0 == null) {
                 slotItem0 = new ButtonItemBuilder(Material.LIME_STAINED_GLASS_PANE)
@@ -285,7 +285,7 @@ public class RewardPage extends TemplatePage {
             }
             asyncButtonMap.put(18 + j, slotItem0);
 
-            int num1 = i * 3 + 1;
+            long num1 = i * 3 + 1L;
             ItemStack slotItem1 = rewardMap.get(num1);
             if (slotItem1 == null) {
                 slotItem1 = new ButtonItemBuilder(Material.LIME_STAINED_GLASS_PANE)
@@ -297,7 +297,7 @@ public class RewardPage extends TemplatePage {
             }
             asyncButtonMap.put(27 + j, slotItem1);
 
-            int num2 = i * 3 + 2;
+            long num2 = i * 3 + 2L;
             ItemStack slotItem2 = rewardMap.get(num2);
             if (slotItem2 == null) {
                 slotItem2 = new ButtonItemBuilder(Material.LIME_STAINED_GLASS_PANE)
@@ -327,38 +327,47 @@ public class RewardPage extends TemplatePage {
      * @param reward 奖励
      */
     private void loreItemDate(ItemStack item, Reward reward) {
+        // 重命名
+        if (reward.getName() != null) {
+            ItemUtils.setDisplayName(item, reward.getName());
+        }
+        // 分割线
         ItemUtils.addLore(item, "");
         ItemUtils.addLore(item, "§e§m·                         ·");
         // 奖励类型
-        String rewardResult = reward.getCommands() == null ? "获取当前物品" : "执行以下指令";
+        String rewardTypeString;
         switch (reward.getType()) {
             case REWARD_LEVEL:
-                ItemUtils.addLore(item, String.format("§f[§b手册等级达到%s§f]%s", reward.getNum() / 3, rewardResult));
+                rewardTypeString = String.format("§f[§b手册等级达到%s§f]", reward.getNum() / 3);
                 break;
             case REWARD_SIGN:
-                ItemUtils.addLore(item, String.format("§f[§b每日签到§f]%s", rewardResult));
+                rewardTypeString = "§f[§b每日签到§f]";
                 break;
             case REWARD_SERIES_SIGN:
-                ItemUtils.addLore(item, String.format("§f[§b连续签到%s天§f]%s", reward.getNum(), rewardResult));
+                rewardTypeString = String.format("§f[§b连续签到%s天§f]", reward.getNum());
                 break;
             case REWARD_CUMULATIVE_SIGN:
-                ItemUtils.addLore(item, String.format("§f[§b累计签到%s天§f]%s", reward.getNum(), rewardResult));
+                rewardTypeString = String.format("§f[§b累计签到%s天§f]", reward.getNum());
                 break;
             case REWARD_PLAYTIME:
-                ItemUtils.addLore(item, String.format("§f[§b当天在线%s§f]%s", TimeUtils.duration(reward.getNum()), rewardResult));
+                rewardTypeString = String.format("§f[§b当天在线%s§f]", TimeUtils.duration(reward.getNum()));
                 break;
             case REWARD_SEASON_PLAYTIME:
-                ItemUtils.addLore(item, String.format("§f[§b周目总在线%s§f]%s", TimeUtils.duration(reward.getNum()), rewardResult));
+                rewardTypeString = String.format("§f[§b周目总在线%s§f]", TimeUtils.duration(reward.getNum()));
                 break;
             default:
+                rewardTypeString = "§f[]";
                 break;
         }
+        ItemUtils.addLore(item, rewardTypeString);
+        String rewardResult = reward.getCommands() == null ? "§f获取当前物品" : "§f执行以下指令";
+        ItemUtils.addLore(item, rewardResult);
         // 奖励指令
         if (reward.getCommands() != null) {
             Gson gson = new Gson();
             List<String> commandsList = gson.fromJson(reward.getCommands(), new TypeToken<List<String>>() {}.getType());
             for (String command : commandsList) {
-                ItemUtils.addLore(item, "&7 - " + command);
+                ItemUtils.addLore(item, "§f - §7/" + command);
             }
         }
         // 按钮

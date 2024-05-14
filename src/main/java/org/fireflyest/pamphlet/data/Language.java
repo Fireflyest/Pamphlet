@@ -19,6 +19,7 @@ public class Language {
     public static String TITLE_PROGRESS;
     public static String TITLE_EXCHANGE;
     public static String TITLE_REWARD;
+    public static String TITLE_EDIT;
 
     private Language() {
 
