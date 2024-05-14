@@ -80,50 +80,11 @@ public class ExpPage extends TemplatePage {
            if (slotItem2 != null) asyncButtonMap.put(36 + j, slotItem2);
         }
 
-        // 右侧签到奖励
-        String diaryTarget = target + "-" + TimeUtils.getLocalDate();
-        Diary diary = service.selectDiaryByTarget(diaryTarget);
-        // if (diary == null) {
-        //     diary = new Diary(target);
-        //     service.insertDiary(target);
-        // }
-        ItemStack signItem;
-        if (diary == null || !diary.isSign()) {
-            signItem = new ButtonItemBuilder(Material.WRITABLE_BOOK)
-                .actionPlayerCommand("pamphlet sign")
-                .name("&f[&a点击签到&f]")
-                .lore("&7点击获取每日礼包")
-                .build();
-        } else {
-            signItem = new ItemBuilder(Material.KNOWLEDGE_BOOK)
-                .name("&f[&a已签到&f]")
-                .lore("&7...")
-                .build();
-        }
-        asyncButtonMap.put(8, signItem);
-        // 右侧在线奖励
-        ItemStack playtimeItem = new ButtonItemBuilder(Material.CLOCK)
-            .actionPlayerCommand("pamphlet playtime")
-            .name("&f[&a在线奖励&f]")
-            .lore("&7...")
-            .build();
-        asyncButtonMap.put(7, playtimeItem);
+        // 右侧玩家操作按钮
+        this.addPlayerButton();
 
         // 左侧导航按钮
-        ItemStack expItem = new ItemBuilder(Material.ENCHANTED_BOOK)
-            .name("&f[&a手册&f]")
-            .build();
-        asyncButtonMap.put(0, expItem);
-        ItemStack progressItem = new ButtonItemBuilder(Material.ANVIL)
-            .actionOpenPage("pamphlet.progress." + target)
-            .name("&f[&a历练&f]")
-            .build();
-        asyncButtonMap.put(1, progressItem);
-        ItemStack exchangeItem = new ButtonItemBuilder(Material.ITEM_FRAME)
-            .actionOpenPage("pamphlet.exchange." + target)
-            .name("&f[&a兑换&f]")
-            .build();
-        asyncButtonMap.put(2, exchangeItem);
+        this.addNavigationButton();
 
         return asyncButtonMap;
     }
@@ -145,6 +106,55 @@ public class ExpPage extends TemplatePage {
         for (int i = 9; i < 18; i++) {
             buttonMap.put(i, blank);
         }
+    }
+
+    
+    private void addNavigationButton() {
+        ItemStack expItem = new ItemBuilder(Material.ENCHANTED_BOOK)
+            .name("&f[&a手册&f]")
+            .build();
+        asyncButtonMap.put(0, expItem);
+        ItemStack progressItem = new ButtonItemBuilder(Material.ANVIL)
+            .actionOpenPage("pamphlet.progress." + target)
+            .name("&f[&a历练&f]")
+            .build();
+        asyncButtonMap.put(1, progressItem);
+        ItemStack exchangeItem = new ButtonItemBuilder(Material.ITEM_FRAME)
+            .actionOpenPage("pamphlet.exchange." + target)
+            .name("&f[&a兑换&f]")
+            .build();
+        asyncButtonMap.put(2, exchangeItem);
+    }
+
+    private void addPlayerButton() {
+        // 右侧签到奖励
+        String diaryTarget = target + "-" + TimeUtils.getLocalDate();
+        Diary diary = service.selectDiaryByTarget(diaryTarget);
+        if (diary == null) {
+            diary = new Diary(target);
+            service.insertDiary(target);
+        }
+        ItemStack signItem;
+        if (!diary.isSign()) {
+            signItem = new ButtonItemBuilder(Material.WRITABLE_BOOK)
+                .actionPlayerCommand("pamphlet sign")
+                .name("&f[&a点击签到&f]")
+                .lore("&7点击获取每日礼包")
+                .build();
+        } else {
+            signItem = new ItemBuilder(Material.KNOWLEDGE_BOOK)
+                .name("&f[&a已签到&f]")
+                .lore("&7...")
+                .build();
+        }
+        asyncButtonMap.put(8, signItem);
+        // 右侧在线奖励
+        ItemStack playtimeItem = new ButtonItemBuilder(Material.CLOCK)
+            .actionPlayerCommand("pamphlet playtime")
+            .name("&f[&a在线奖励&f]")
+            .lore("&7...")
+            .build();
+        asyncButtonMap.put(7, playtimeItem);
     }
     
 }

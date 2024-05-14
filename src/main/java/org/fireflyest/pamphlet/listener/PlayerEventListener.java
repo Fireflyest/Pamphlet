@@ -6,7 +6,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.NumberConversions;
-import org.fireflyest.craftgui.api.ViewGuide;
 import org.fireflyest.craftgui.button.ButtonAction;
 import org.fireflyest.craftgui.event.ViewPlaceEvent;
 import org.fireflyest.pamphlet.bean.Diary;
@@ -16,7 +15,6 @@ import org.fireflyest.pamphlet.data.Language;
 import org.fireflyest.pamphlet.service.PamphletService;
 import org.fireflyest.util.SerializationUtil;
 import org.fireflyest.util.TimeUtils;
-import org.junit.Test;
 
 public class PlayerEventListener implements Listener {
     

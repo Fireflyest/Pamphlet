@@ -187,37 +187,11 @@ public class EditPage extends TemplatePage {
         ItemUtils.addLore(item, editType == EDIT_REMOVE ? "§4点击删除":"");
         ItemUtils.addLore(item, "§e§m·                         ·");
         // 奖励类型
-        String rewardTypeString;
-        switch (reward.getType()) {
-            case RewardPage.REWARD_LEVEL:
-                rewardTypeString = String.format("§f[§b手册等级达到%s§f]", reward.getNum() / 3);
-                break;
-            case RewardPage.REWARD_SIGN:
-                rewardTypeString = "§f[§b每日签到§f]";
-                break;
-            case RewardPage.REWARD_SERIES_SIGN:
-                rewardTypeString = String.format("§f[§b连续签到%s天§f]", reward.getNum());
-                break;
-            case RewardPage.REWARD_CUMULATIVE_SIGN:
-                rewardTypeString = String.format("§f[§b累计签到%s天§f]", reward.getNum());
-                break;
-            case RewardPage.REWARD_PLAYTIME:
-                rewardTypeString = String.format("§f[§b当天在线%s§f]", TimeUtils.duration(reward.getNum()));
-                break;
-            case RewardPage.REWARD_SEASON_PLAYTIME:
-                rewardTypeString = String.format("§f[§b周目总在线%s§f]", TimeUtils.duration(reward.getNum()));
-                break;
-            default:
-                rewardTypeString = "§f[]";
-                break;
-        }
+        String rewardTypeString = this.getRewardTypeString(reward.getType(), reward.getNum());
         // 修改条件数值
         if (editType == EDIT_NUM) {
             int editedNum = NumberConversions.toInt(content);
-            if (RewardPage.REWARD_LEVEL.equals(reward.getType())) {
-                editedNum /= 3;
-            }
-            rewardTypeString += (" §7→ §4" + editedNum);
+            rewardTypeString += (" §7→ §4" + (RewardPage.REWARD_LEVEL.equals(reward.getType()) ? editedNum / 3 : editedNum));
         }
         ItemUtils.addLore(item, rewardTypeString);
         String rewardResult = (reward.getCommands() == null && editType != EDIT_ADD_COMMAND) ? "§f获取当前物品" : "§f执行以下指令";
@@ -244,4 +218,38 @@ public class EditPage extends TemplatePage {
 
     }
     
+    /**
+     * 获取奖励条件语句
+     * @param rewardType 奖励获取类型
+     * @param rewardNum 奖励获取条件数值
+     * @return 奖励条件语句
+     */
+    private String getRewardTypeString(String rewardType, long rewardNum) {
+        String rewardTypeString;
+        switch (rewardType) {
+            case RewardPage.REWARD_LEVEL:
+                rewardTypeString = String.format("§f[§b手册等级达到%s§f]", rewardNum / 3);
+                break;
+            case RewardPage.REWARD_SIGN:
+                rewardTypeString = "§f[§b每日签到§f]";
+                break;
+            case RewardPage.REWARD_SERIES_SIGN:
+                rewardTypeString = String.format("§f[§b连续签到%s天§f]", rewardNum);
+                break;
+            case RewardPage.REWARD_CUMULATIVE_SIGN:
+                rewardTypeString = String.format("§f[§b累计签到%s天§f]", rewardNum);
+                break;
+            case RewardPage.REWARD_PLAYTIME:
+                rewardTypeString = String.format("§f[§b当天在线%s§f]", TimeUtils.duration(rewardNum));
+                break;
+            case RewardPage.REWARD_SEASON_PLAYTIME:
+                rewardTypeString = String.format("§f[§b周目总在线%s§f]", TimeUtils.duration(rewardNum));
+                break;
+            default:
+                rewardTypeString = "§f[]";
+                break;
+        }
+        return rewardTypeString;
+    }
+
 }
