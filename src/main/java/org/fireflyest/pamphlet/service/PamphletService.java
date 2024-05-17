@@ -42,6 +42,10 @@ public class PamphletService extends SQLService {
         return diaryDao.insertDiary(target);
     }
 
+    public long updateDiarySign(String target) {
+        return updateDiarySign(target);
+    }
+
 
     // *****************************************
     public Reward[] selectRewardByType(String type, int season) {
@@ -99,6 +103,18 @@ public class PamphletService extends SQLService {
 
     public long insertSteve(UUID uid, String name, int season) {
         return steveDao.insertSteve(uid.toString(), name, season);
+    }
+
+    public long updateSteveSignedAdd(UUID uid) {
+        return steveDao.updateSteveSignedAdd(uid.toString());
+    }
+
+    public long updateSteveSeriesAdd(UUID uid) {
+        return steveDao.updateSteveSeriesAdd(uid.toString());
+    }
+
+    public long updateSteveSeriesReset(UUID uid) {
+        return steveDao.updateSteveSeriesReset(uid.toString());
     }
 
 }

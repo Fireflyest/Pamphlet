@@ -37,12 +37,12 @@ public class PlayerEventListener implements Listener {
         }
 
         // 玩家是否当天已签到，未签发送提示
-        String target = player.getUniqueId().toString() + "-" + TimeUtils.getLocalDate();
-        Diary diary = service.selectDiaryByTarget(target);
+        String diaryTarget = player.getUniqueId().toString() + "-" + TimeUtils.getLocalDate();
+        Diary diary = service.selectDiaryByTarget(diaryTarget);
         // 今日没有数据
         if (diary == null) {
-            diary = new Diary(target);
-            service.insertDiary(target);
+            diary = new Diary(diaryTarget);
+            service.insertDiary(diaryTarget);
         }
         // 判断是否签到
         if (!diary.isSign()) {
