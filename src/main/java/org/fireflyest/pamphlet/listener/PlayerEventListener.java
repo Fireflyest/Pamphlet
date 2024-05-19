@@ -1,5 +1,8 @@
 package org.fireflyest.pamphlet.listener;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -13,6 +16,7 @@ import org.fireflyest.pamphlet.bean.Steve;
 import org.fireflyest.pamphlet.data.Config;
 import org.fireflyest.pamphlet.data.Language;
 import org.fireflyest.pamphlet.service.PamphletService;
+import org.fireflyest.util.RandomUtils;
 import org.fireflyest.util.SerializationUtil;
 import org.fireflyest.util.TimeUtils;
 
@@ -79,14 +83,15 @@ public class PlayerEventListener implements Listener {
     }
 
 
-    public static void testTime() {
-        System.out.println(TimeUtils.getLocalDate());
-        System.out.println(NumberConversions.toInt(" 004"));
+    // public static void testTime() {
+    //     System.out.println(TimeUtils.getLocalDate());
+    //     System.out.println(NumberConversions.toInt(" 004"));
         
-    }
-
-    // public static void main(String[] args) {
-    //     testTime();
     // }
+
+    
+
+    public static void main(String[] args) {
+    }
 
 }

@@ -1,12 +1,33 @@
 package org.fireflyest.pamphlet.gui;
 
+import java.util.List;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.NumberConversions;
 import org.fireflyest.craftgui.api.View;
 import org.fireflyest.craftgui.api.ViewGuide;
+import org.fireflyest.craftgui.util.TranslateUtils;
+import org.fireflyest.pamphlet.bean.Reward;
+import org.fireflyest.pamphlet.data.Language;
 import org.fireflyest.pamphlet.service.PamphletService;
+import org.fireflyest.util.ItemUtils;
+import org.fireflyest.util.RandomUtils;
+import org.fireflyest.util.SerializationUtil;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 public class RewardView implements View<RewardPage> {
+
+    private static final Pattern varPattern = Pattern.compile("%([^%]*)%");
 
     private final PamphletService service;
     private final ViewGuide guide;
@@ -31,5 +52,67 @@ public class RewardView implements View<RewardPage> {
     public void removePage(@Nullable String target) {
         // 
     }
-    
+
+    /**
+     * 分发奖励
+     * @param player 玩家
+     * @param reward 奖励
+     */
+    public static void handOutReward(@Nonnull Player player, @Nonnull Reward reward) {
+        String commands = reward.getCommands();
+        // 物品奖励或者指令奖励
+        if (commands == null) {
+            // 获取物品
+            ItemStack rewardItem = SerializationUtil.deserializeItemStack(reward.getItem());
+            player.getInventory().addItem(rewardItem);
+            // 奖励提示
+            String rewardItemName = reward.getName();
+            if (rewardItemName == null) {
+                rewardItemName = ItemUtils.getDisplayName(rewardItem);
+            }
+            if (rewardItemName == null || "".equals(rewardItemName)) {
+                rewardItemName = TranslateUtils.translate(rewardItem.getType());
+            }
+            player.sendMessage(Language.ITEM_REWARD + "(" + rewardItemName + ")");
+        } else {
+            Gson gson = new Gson();
+            List<String> commandsList = gson.fromJson(commands, new TypeToken<List<String>>() {}.getType());
+            for (String command : commandsList) {
+                // 替换参数
+                command = varReplace(command, player.getName());
+                // 控制台执行指令
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+            }
+            // 奖励提示
+            String rewardItemName = reward.getName();
+            player.sendMessage(Language.COMMANDS_REWARD + "(" + rewardItemName + ")");
+        }
+    }
+
+    /**
+     * 替换指令里的参数
+     * @param command 指令
+     * @param playerName 玩家名称
+     * @return 参数替换后的指令
+     */
+    private static String varReplace(@Nonnull String command, @Nonnull String playerName) {
+        // 替换变量
+        Matcher varMatcher = varPattern.matcher(command);
+        StringBuilder stringBuilder = new StringBuilder();
+        while (varMatcher.find()) {
+            String parameter = varMatcher.group();
+            String parameterName = parameter.substring(1, parameter.length() - 1);
+            if ("player".equals(parameterName)) { // %player%
+                parameterName = playerName;
+            } else if (parameterName.contains("random")) { // %random-1-10%
+                String[] randomVar = parameterName.split("-");
+                int randomInt = RandomUtils.randomInt(NumberConversions.toInt(randomVar[1]), NumberConversions.toInt(randomVar[2]));
+                parameterName = String.valueOf(randomInt);
+            }
+            varMatcher.appendReplacement(stringBuilder, parameterName);
+        }
+        varMatcher.appendTail(stringBuilder);
+        return stringBuilder.toString();
+    }
+
 }

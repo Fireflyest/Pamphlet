@@ -15,7 +15,7 @@ public interface DiaryDao {
     @Insert("INSERT INTO `pamphlet_diary` (`target`) VALUES ('${target}');")
     long insertDiary(String target);
 
-    @Update("UPDATE `pamphlet_diary` SET `sign`=1 WHERE `target`='${target}' LIMIT 1;")
+    @Update("UPDATE `pamphlet_diary` SET `sign`=1 WHERE `target`='${target}';")
     long updateDiarySign(String target);
 
 }

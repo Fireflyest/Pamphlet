@@ -127,7 +127,7 @@ public final class Pamphlet extends JavaPlugin {
         PluginCommand pamphlet = this.getCommand("pamphlet");
         if (pamphlet != null) {
             PamphletCommand pamphletCommand = new PamphletCommand(guide);
-            SignCommand signCommand = new SignCommand();
+            SignCommand signCommand = new SignCommand(service, guide);
             PlaytimeCommand playtimeCommand = new PlaytimeCommand();
             RewardCommand rewardCommand = new RewardCommand(guide);
             rewardCommand.setArgument(0, new NumberArgs());

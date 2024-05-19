@@ -9,7 +9,10 @@ import org.bukkit.entity.Player;
 import org.fireflyest.craftcommand.command.SubCommand;
 import org.fireflyest.craftgui.api.ViewGuide;
 import org.fireflyest.pamphlet.bean.Diary;
+import org.fireflyest.pamphlet.bean.Reward;
+import org.fireflyest.pamphlet.data.Config;
 import org.fireflyest.pamphlet.data.Language;
+import org.fireflyest.pamphlet.gui.RewardView;
 import org.fireflyest.pamphlet.service.PamphletService;
 import org.fireflyest.util.TimeUtils;
 
@@ -52,7 +55,9 @@ public class SignCommand extends SubCommand {
         // 签到
         service.updateDiarySign(diaryTarget);
         sender.sendMessage(Language.SIGN_SUCCESS);
-
+        // 签到奖励
+       Reward reward = service.selectRewardRandom("sign", Config.SEASON);
+       RewardView.handOutReward(player, reward);
 
         // 累计签到奖励
         service.updateSteveSignedAdd(player.getUniqueId());

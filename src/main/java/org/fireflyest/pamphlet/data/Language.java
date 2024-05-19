@@ -12,6 +12,8 @@ public class Language {
     public static String SIGN_SUCCESS;
     public static String SIGN_ALREADY;
     public static String SIGN_REMIND;
+    public static String ITEM_REWARD;
+    public static String COMMANDS_REWARD;
     
     public static String PLAYTIME_REMIND;
 

@@ -18,8 +18,10 @@ OnlyPlayerUse: '§c§l#§f该指令仅限玩家输入'
 NotPermission: '§c§l#§f你没有使用该指令的权限 §3%permission%'
 OfflinePlayer: '§c§l#§f玩家§3%player%§f不在线或不存在'
 
-SignRemind: '§6✦§f 每日奖励可以领取快去看看吧'
-SignSuccess: '§6✦§f成功签到，奖品已放入背包'
+SignRemind: '§6✦§f每日奖励可以领取快去看看吧'
+SignSuccess: '§6✦§f成功签到'
+ItemReward: '§6✦§f物品奖励已放入背包'
+CommandsReward: '§6✦§f奖励已发放'
 
 PlaytimeRemind: '§6✦§f在线奖励可以领取快去看看吧'
 

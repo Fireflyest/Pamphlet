@@ -43,13 +43,17 @@ public class PamphletService extends SQLService {
     }
 
     public long updateDiarySign(String target) {
-        return updateDiarySign(target);
+        return diaryDao.updateDiarySign(target);
     }
 
 
     // *****************************************
     public Reward[] selectRewardByType(String type, int season) {
         return rewardDao.selectRewardByType(type, season);
+    }
+
+    public Reward selectRewardRandom(String type, int season) {
+        return rewardDao.selectRewardRandom(type, season);
     }
 
     public Reward selectRewardById(int id) {
