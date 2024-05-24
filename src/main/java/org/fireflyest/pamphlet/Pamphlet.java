@@ -59,6 +59,8 @@ public final class Pamphlet extends JavaPlugin {
     private PamphletService service;
     private String url;
 
+    public static final String KEY_PLAYER_PLAYTIME = "pamphlet.playtime."; // 玩家在线时间
+
     public static final String VIEW_EXP = "pamphlet.exp";
     public static final String VIEW_PROGRESS = "pamphlet.progress";
     public static final String VIEW_EXCHANGE = "pamphlet.exchange";
@@ -92,12 +94,14 @@ public final class Pamphlet extends JavaPlugin {
         
         // listener
         this.getLogger().info("Lunching listener.");
-        this.getServer().getPluginManager().registerEvents(new PlayerEventListener(service), this);
+        this.getServer().getPluginManager().registerEvents(new PlayerEventListener(service, guide), this);
         // this.getServer().getPluginManager().registerEvents(new TaskEventListener(service), this);
 
         
         // commands
         this.setupCommand();
+
+        
     }
 
     @Override

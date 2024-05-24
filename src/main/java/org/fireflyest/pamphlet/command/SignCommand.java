@@ -40,8 +40,8 @@ public class SignCommand extends SubCommand {
 
         // 如果当天没有数据先插入
         if (todayDiary == null) {
-            todayDiary = new Diary(diaryTarget);
-            service.insertDiary(diaryTarget);
+            todayDiary = new Diary(diaryTarget, Config.SEASON);
+            service.insertDiary(diaryTarget, Config.SEASON);
         }
 
         // 当天已签
@@ -59,17 +59,19 @@ public class SignCommand extends SubCommand {
        Reward reward = service.selectRewardRandom("sign", Config.SEASON);
        RewardView.handOutReward(player, reward);
 
-        // 累计签到奖励
+        // 累计签到
         service.updateSteveSignedAdd(player.getUniqueId());
-
-
+        // TODO: 累计签到奖励
 
         // 昨天数据用于判断是否连续签到
         String yesterdayTarget = player.getUniqueId().toString() + "-" + LocalDate.now().plusDays(-1).toString();
         Diary yesterdayDiary = service.selectDiaryByTarget(yesterdayTarget);
-        // 连续签到奖励
+        // 连续签到
         if (yesterdayDiary != null && yesterdayDiary.isSign()) {
             service.updateSteveSeriesAdd(player.getUniqueId());
+
+            // TODO: 连续签到奖励
+
         } else {
             service.updateSteveSeriesReset(player.getUniqueId());
         }

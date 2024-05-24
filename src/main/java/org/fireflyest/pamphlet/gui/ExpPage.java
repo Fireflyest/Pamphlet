@@ -6,8 +6,10 @@ import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
+import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.NumberConversions;
 import org.fireflyest.craftgui.api.ViewGuide;
 import org.fireflyest.craftgui.button.ButtonItemBuilder;
 import org.fireflyest.craftgui.view.TemplatePage;
@@ -30,6 +32,8 @@ public class ExpPage extends TemplatePage {
     private int selectLevel = -1;
     private int outsetLevel = 1;
 
+    private Steve steve;
+
     protected ExpPage(String target, PamphletService service, ViewGuide guide) {
         super(Language.TITLE_EXP, target, 0, 54);
         this.service = service;
@@ -44,8 +48,9 @@ public class ExpPage extends TemplatePage {
         asyncButtonMap.putAll(buttonMap);
 
         // 获取玩家数据
-        Steve steve = service.selectSteveByUid(UUID.fromString(target));
-        
+        steve = service.selectSteveByUid(UUID.fromString(target));
+        Validate.notNull(steve, "player uuid:" + target + " data is null!");
+
         // 获取所有奖励
         Map<Long, ItemStack> rewardMap = new HashMap<>();      
         for (Reward reward : service.selectRewardByType("level", Config.SEASON)) {
@@ -109,6 +114,9 @@ public class ExpPage extends TemplatePage {
     }
 
     
+    /**
+     * 左侧导航
+     */
     private void addNavigationButton() {
         ItemStack expItem = new ItemBuilder(Material.ENCHANTED_BOOK)
             .name("&f[&a手册&f]")
@@ -126,13 +134,16 @@ public class ExpPage extends TemplatePage {
         asyncButtonMap.put(2, exchangeItem);
     }
 
+    /**
+     * 右侧签到和在线按钮
+     */
     private void addPlayerButton() {
         // 右侧签到奖励
         String diaryTarget = target + "-" + TimeUtils.getLocalDate();
         Diary diary = service.selectDiaryByTarget(diaryTarget);
         if (diary == null) {
-            diary = new Diary(target);
-            service.insertDiary(target);
+            diary = new Diary(target, Config.SEASON);
+            service.insertDiary(target, Config.SEASON);
         }
         ItemStack signItem;
         if (!diary.isSign()) {
@@ -144,15 +155,21 @@ public class ExpPage extends TemplatePage {
         } else {
             signItem = new ItemBuilder(Material.KNOWLEDGE_BOOK)
                 .name("&f[&a已签到&f]")
-                .lore("&7...")
+                .lore(String.format("&7周目总签到&b%s&7天", steve.getSigned()))
+                .lore(String.format("&7连续签到&b%s&7天", steve.getSeries()))
                 .build();
         }
         asyncButtonMap.put(8, signItem);
+
         // 右侧在线奖励
+        String playtimeKey = Pamphlet.KEY_PLAYER_PLAYTIME + target;
+        long todayPlaytime = guide.getViewVariable().age(playtimeKey) * 1000 + NumberConversions.toLong(guide.getViewVariable().get(playtimeKey));
+        long seasonPlaytime = service.selectSeasonPlaytime(target, Config.SEASON);
         ItemStack playtimeItem = new ButtonItemBuilder(Material.CLOCK)
             .actionPlayerCommand("pamphlet playtime")
             .name("&f[&a在线奖励&f]")
-            .lore("&7...")
+            .lore(String.format("&7周目总在线&b%s", TimeUtils.duration(seasonPlaytime + todayPlaytime)))
+            .lore(String.format("&7今天在线&b%s", TimeUtils.duration(todayPlaytime)))
             .build();
         asyncButtonMap.put(7, playtimeItem);
     }

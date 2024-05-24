@@ -22,6 +22,6 @@ public interface SteveDao {
     long updateSteveSeriesAdd(String uid);
 
     @Update("UPDATE `pamphlet_steve` SET `series`=1 WHERE `uid`='${uid}';")
-    long updateSteveSeriesReset(String uid);
+    long updateSteveSeriesReset(String uid);    
 
 }

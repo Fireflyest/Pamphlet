@@ -41,12 +41,12 @@ public class EditPage extends TemplatePage {
     public static final int EDIT_ADD_COMMAND = 3;
     public static final int EDIT_REMOVE_COMMAND = 4;
     public static final int EDIT_REMOVE = 5;
-    
+
     protected EditPage(String target, PamphletService service, ViewGuide guide) {
         super(Language.TITLE_EDIT, target, 0, 54);
         this.service = service;
         this.guide = guide;
-        
+
         this.updateTitle(Language.TITLE_EDIT);
         this.refreshPage();
     }
@@ -57,7 +57,7 @@ public class EditPage extends TemplatePage {
         asyncButtonMap.clear();
         asyncButtonMap.putAll(buttonMap);
 
-       Reward reward = service.selectRewardById(NumberConversions.toInt(target));
+        Reward reward = service.selectRewardById(NumberConversions.toInt(target));
         if (reward == null) {
             return asyncButtonMap;
         }
@@ -68,11 +68,11 @@ public class EditPage extends TemplatePage {
 
         // 提示按钮
         ItemStack tipItem = new ItemBuilder(Material.WRITABLE_BOOK)
-            .name(TIP_TEXT)
-            .lore("&7在上方输入框输入参数")
-            .lore("&7中间按钮切换编辑内容类型")
-            .lore("&7右侧按钮确认更改")
-            .build();
+                .name(TIP_TEXT)
+                .lore("&7在上方输入框输入参数")
+                .lore("&7中间按钮切换编辑内容类型")
+                .lore("&7右侧按钮确认更改")
+                .build();
         asyncButtonMap.put(0, tipItem);
 
         // 编辑类型按钮
@@ -80,34 +80,34 @@ public class EditPage extends TemplatePage {
         switch (editType) {
             case EDIT_NONE:
                 editItem = new ItemBuilder(Material.SPYGLASS)
-                    .name("&f[&a仅查看&f]")
-                    .lore("&7点击切换编辑类型")
-                    .build();
+                        .name("&f[&a仅查看&f]")
+                        .lore("&7点击切换编辑类型")
+                        .build();
                 break;
             case EDIT_NAME:
                 editItem = new ItemBuilder(Material.NAME_TAG)
-                    .name("&f[&a更改名称&f]")
-                    .build();
+                        .name("&f[&a更改名称&f]")
+                        .build();
                 break;
             case EDIT_NUM:
                 editItem = new ItemBuilder(Material.FEATHER)
-                    .name("&f[&a更改数字条件&f]") 
-                    .build();
+                        .name("&f[&a更改数字条件&f]")
+                        .build();
                 break;
             case EDIT_ADD_COMMAND:
                 editItem = new ItemBuilder(Material.CHAIN_COMMAND_BLOCK)
-                    .name("&f[&a添加指令&f]")
-                    .build();
+                        .name("&f[&a添加指令&f]")
+                        .build();
                 break;
             case EDIT_REMOVE_COMMAND:
                 editItem = new ItemBuilder(Material.COMMAND_BLOCK)
-                    .name("&f[&a删除指令&f]")
-                    .build();
+                        .name("&f[&a删除指令&f]")
+                        .build();
                 break;
             case EDIT_REMOVE:
                 editItem = new ItemBuilder(Material.LAVA_BUCKET)
-                    .name("&f[&c删除奖励&f]")
-                    .build();
+                        .name("&f[&c删除奖励&f]")
+                        .build();
                 break;
             default:
                 break;
@@ -121,14 +121,15 @@ public class EditPage extends TemplatePage {
 
     @Override
     public void refreshPage() {
-        // 
+        //
     }
 
     @Override
     public @Nullable ItemStack getItem(int slot) {
         if (slot == 1) {
             editType++;
-            if (editType > 5) editType = 0;
+            if (editType > 5)
+                editType = 0;
         } else if (slot == 2) {
             int id = NumberConversions.toInt(target);
             switch (editType) {
@@ -163,6 +164,7 @@ public class EditPage extends TemplatePage {
 
     /**
      * 更新文本内容
+     * 
      * @param content 文本内容
      */
     public void updateContent(String content) {
@@ -173,7 +175,8 @@ public class EditPage extends TemplatePage {
 
     /**
      * 奖励物品注释
-     * @param item 物品
+     * 
+     * @param item   物品
      * @param reward 奖励
      */
     private void loreItemDate(ItemStack item, Reward reward) {
@@ -184,14 +187,15 @@ public class EditPage extends TemplatePage {
             ItemUtils.setDisplayName(item, reward.getName());
         }
         // 分割线
-        ItemUtils.addLore(item, editType == EDIT_REMOVE ? "§4点击删除":"");
+        ItemUtils.addLore(item, editType == EDIT_REMOVE ? "§4点击删除" : "");
         ItemUtils.addLore(item, "§e§m·                         ·");
         // 奖励类型
         String rewardTypeString = this.getRewardTypeString(reward.getType(), reward.getNum());
         // 修改条件数值
         if (editType == EDIT_NUM) {
             int editedNum = NumberConversions.toInt(content);
-            rewardTypeString += (" §7→ §4" + (RewardPage.REWARD_LEVEL.equals(reward.getType()) ? editedNum / 3 : editedNum));
+            rewardTypeString += (" §7→ §4"
+                    + (RewardPage.REWARD_LEVEL.equals(reward.getType()) ? editedNum / 3 : editedNum));
         }
         ItemUtils.addLore(item, rewardTypeString);
         String rewardResult = (reward.getCommands() == null && editType != EDIT_ADD_COMMAND) ? "§f获取当前物品" : "§f执行以下指令";
@@ -203,7 +207,8 @@ public class EditPage extends TemplatePage {
         }
         if (reward.getCommands() != null) {
             Gson gson = new Gson();
-            List<String> commandsList = gson.fromJson(reward.getCommands(), new TypeToken<List<String>>() {}.getType());
+            List<String> commandsList = gson.fromJson(reward.getCommands(), new TypeToken<List<String>>() {
+            }.getType());
             if (editType == EDIT_REMOVE_COMMAND && commandsList.contains(content)) {
                 commandsList.remove(content);
                 commandsList.add("§m" + content);
@@ -217,11 +222,12 @@ public class EditPage extends TemplatePage {
         ItemUtils.setItemNbt(item, ButtonAction.NBT_VALUE_KEY, Pamphlet.VIEW_EDIT + "." + reward.getId());
 
     }
-    
+
     /**
      * 获取奖励条件语句
+     * 
      * @param rewardType 奖励获取类型
-     * @param rewardNum 奖励获取条件数值
+     * @param rewardNum  奖励获取条件数值
      * @return 奖励条件语句
      */
     private String getRewardTypeString(String rewardType, long rewardNum) {

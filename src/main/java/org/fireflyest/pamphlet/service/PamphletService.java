@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.checkerframework.checker.units.qual.s;
 import org.fireflyest.craftdatabase.annotation.Auto;
 import org.fireflyest.craftdatabase.annotation.Service;
 import org.fireflyest.craftdatabase.sql.SQLService;
@@ -38,12 +39,20 @@ public class PamphletService extends SQLService {
         return diaryDao.selectDiaryByTarget(target);
     }
 
-    public long insertDiary(String target) {
-        return diaryDao.insertDiary(target);
+    public long selectSeasonPlaytime(String uid, int season) {
+        return diaryDao.selectSeasonPlaytime(uid, season);
+    }
+
+    public long insertDiary(String target, int season) {
+        return diaryDao.insertDiary(target, season);
     }
 
     public long updateDiarySign(String target) {
         return diaryDao.updateDiarySign(target);
+    }
+
+    public long updateDiaryPlaytimeAdd(String target, long playtime) {
+        return diaryDao.updateDiaryPlaytimeAdd(target, playtime);
     }
 
 

@@ -18,8 +18,12 @@ public class Diary {
     @Column(defaultValue = "0")
     private long playtime;
 
-    public Diary(String target) {
+    @Column(defaultValue = "0")
+    private int season;
+
+    public Diary(String target, int season) {
         this.target = target;
+        this.season = season;
     }
 
     public Diary() {
@@ -47,6 +51,14 @@ public class Diary {
 
     public void setPlaytime(long playtime) {
         this.playtime = playtime;
+    }
+
+    public int getSeason() {
+        return season;
+    }
+
+    public void setSeason(int season) {
+        this.season = season;
     }
 
 }

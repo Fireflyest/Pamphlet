@@ -1,4 +1,4 @@
-Version: '${project.version}'
+# v${project.version}
 
 PluginName: '§f§l[§0Activity§f§l]'
 Help: |
