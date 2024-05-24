@@ -12,6 +12,12 @@ public interface SteveDao {
     @Select("SELECT * FROM `pamphlet_steve` WHERE `uid`='${uid}';")
     Steve selectSteveByUid(String uid);
 
+    @Select("SELECT `signed` FROM `pamphlet_steve` WHERE `uid`='${uid}';")
+    int selectSteveSignedByUid(String uid);
+
+    @Select("SELECT `series` FROM `pamphlet_steve` WHERE `uid`='${uid}';")
+    int selectSteveSeriesByUid(String uid);
+
     @Insert("INSERT INTO `pamphlet_steve` (`uid`,`name`,`season`) VALUES ('${uid}','${name}',${season});")
     long insertSteve(String uid, String name, int season);
     

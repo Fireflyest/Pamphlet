@@ -12,6 +12,7 @@ import org.fireflyest.pamphlet.bean.Diary;
 import org.fireflyest.pamphlet.bean.Reward;
 import org.fireflyest.pamphlet.data.Config;
 import org.fireflyest.pamphlet.data.Language;
+import org.fireflyest.pamphlet.gui.RewardPage;
 import org.fireflyest.pamphlet.gui.RewardView;
 import org.fireflyest.pamphlet.service.PamphletService;
 import org.fireflyest.util.TimeUtils;
@@ -56,12 +57,17 @@ public class SignCommand extends SubCommand {
         service.updateDiarySign(diaryTarget);
         sender.sendMessage(Language.SIGN_SUCCESS);
         // 签到奖励
-       Reward reward = service.selectRewardRandom("sign", Config.SEASON);
-       RewardView.handOutReward(player, reward);
+       Reward signReward = service.selectRewardRandom(RewardPage.REWARD_SIGN, 0, Config.SEASON);
+       RewardView.handOutReward(player, signReward);
 
         // 累计签到
         service.updateSteveSignedAdd(player.getUniqueId());
-        // TODO: 累计签到奖励
+        // 累计签到奖励
+        int signed = service.selectSteveSignedByUid(player.getUniqueId());
+        Reward signedReward = service.selectRewardRandom(RewardPage.REWARD_CUMULATIVE_SIGN, signed, Config.SEASON);
+        RewardView.handOutReward(player, signedReward);
+
+
 
         // 昨天数据用于判断是否连续签到
         String yesterdayTarget = player.getUniqueId().toString() + "-" + LocalDate.now().plusDays(-1).toString();
@@ -70,8 +76,10 @@ public class SignCommand extends SubCommand {
         if (yesterdayDiary != null && yesterdayDiary.isSign()) {
             service.updateSteveSeriesAdd(player.getUniqueId());
 
-            // TODO: 连续签到奖励
-
+            // 连续签到奖励
+            int series = service.selectSteveSeriesByUid(player.getUniqueId());
+            Reward seriesReward = service.selectRewardRandom(RewardPage.REWARD_SERIES_SIGN, series, Config.SEASON);
+            RewardView.handOutReward(player, seriesReward);
         } else {
             service.updateSteveSeriesReset(player.getUniqueId());
         }

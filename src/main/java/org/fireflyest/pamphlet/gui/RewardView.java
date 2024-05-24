@@ -58,7 +58,10 @@ public class RewardView implements View<RewardPage> {
      * @param player 玩家
      * @param reward 奖励
      */
-    public static void handOutReward(@Nonnull Player player, @Nonnull Reward reward) {
+    public static void handOutReward(@Nonnull Player player, @Nullable Reward reward) {
+        if (reward == null) {
+            return;
+        }
         String commands = reward.getCommands();
         // 物品奖励或者指令奖励
         if (commands == null) {

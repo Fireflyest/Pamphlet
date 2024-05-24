@@ -1,17 +1,21 @@
 package org.fireflyest.pamphlet;
 
+import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.fireflyest.craftcommand.argument.NumberArgs;
 import org.fireflyest.craftdatabase.sql.SQLConnector;
 import org.fireflyest.craftgui.api.ViewGuide;
+import org.fireflyest.pamphlet.bean.Diary;
 import org.fireflyest.pamphlet.command.PamphletCommand;
 import org.fireflyest.pamphlet.command.PlaytimeCommand;
 import org.fireflyest.pamphlet.command.RewardCommand;
 import org.fireflyest.pamphlet.command.SignCommand;
 import org.fireflyest.pamphlet.data.Config;
+import org.fireflyest.pamphlet.data.Language;
 import org.fireflyest.pamphlet.data.PamphletYaml;
 import org.fireflyest.pamphlet.gui.EditView;
 import org.fireflyest.pamphlet.gui.ExchangeView;
@@ -20,6 +24,7 @@ import org.fireflyest.pamphlet.gui.ProgressView;
 import org.fireflyest.pamphlet.gui.RewardView;
 import org.fireflyest.pamphlet.listener.PlayerEventListener;
 import org.fireflyest.pamphlet.service.PamphletService;
+import org.fireflyest.util.TimeUtils;
 
 
 /*
@@ -101,11 +106,28 @@ public final class Pamphlet extends JavaPlugin {
         // commands
         this.setupCommand();
 
-        
+        // 重置在线数据
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            String diaryTarget = player.getUniqueId().toString() + "-" + TimeUtils.getLocalDate();
+            Diary diary = service.selectDiaryByTarget(diaryTarget);
+            Validate.notNull(diary, "diaryTarget " + diaryTarget + " is null!");
+            // 记录在线时间
+            long playtime = diary.getPlaytime();
+            guide.getViewVariable().set(Pamphlet.KEY_PLAYER_PLAYTIME + player.getUniqueId().toString(), String.valueOf(playtime));
+        }
     }
 
     @Override
     public void onDisable() {
+        // 记录在线时间
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            // 获取连续在线时间并入当日在线时间
+            String playtimeKey = Pamphlet.KEY_PLAYER_PLAYTIME + player.getUniqueId().toString();
+            String diaryTarget = player.getUniqueId().toString() + "-" + TimeUtils.getLocalDate();
+            service.updateDiaryPlaytimeAdd(diaryTarget, guide.getViewVariable().age(playtimeKey) * 1000);
+            // 清除连续在线
+            guide.getViewVariable().del(playtimeKey);
+        }
         // close data service
         if (service != null) {
             SQLConnector.close(url);

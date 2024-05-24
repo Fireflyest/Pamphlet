@@ -155,8 +155,8 @@ public class ExpPage extends TemplatePage {
         } else {
             signItem = new ItemBuilder(Material.KNOWLEDGE_BOOK)
                 .name("&f[&a已签到&f]")
-                .lore(String.format("&7周目总签到&b%s&7天", steve.getSigned()))
-                .lore(String.format("&7连续签到&b%s&7天", steve.getSeries()))
+                .lore(String.format("&7连续签到&9%s&7天", steve.getSeries()))
+                .lore(String.format("&7周目总签到&9%s&7天", steve.getSigned()))
                 .build();
         }
         asyncButtonMap.put(8, signItem);
@@ -168,8 +168,8 @@ public class ExpPage extends TemplatePage {
         ItemStack playtimeItem = new ButtonItemBuilder(Material.CLOCK)
             .actionPlayerCommand("pamphlet playtime")
             .name("&f[&a在线奖励&f]")
-            .lore(String.format("&7周目总在线&b%s", TimeUtils.duration(seasonPlaytime + todayPlaytime)))
-            .lore(String.format("&7今天在线&b%s", TimeUtils.duration(todayPlaytime)))
+            .lore(String.format("&7今天在线&9%s", TimeUtils.duration(todayPlaytime)))
+            .lore(String.format("&7周目总在线&9%s", TimeUtils.duration(seasonPlaytime + todayPlaytime)))
             .build();
         asyncButtonMap.put(7, playtimeItem);
     }

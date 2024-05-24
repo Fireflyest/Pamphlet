@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.checkerframework.checker.units.qual.s;
 import org.fireflyest.craftdatabase.annotation.Auto;
+import org.fireflyest.craftdatabase.annotation.Select;
 import org.fireflyest.craftdatabase.annotation.Service;
 import org.fireflyest.craftdatabase.sql.SQLService;
 import org.fireflyest.pamphlet.bean.Diary;
@@ -61,8 +62,8 @@ public class PamphletService extends SQLService {
         return rewardDao.selectRewardByType(type, season);
     }
 
-    public Reward selectRewardRandom(String type, int season) {
-        return rewardDao.selectRewardRandom(type, season);
+    public Reward selectRewardRandom(String type, long num, int season) {
+        return rewardDao.selectRewardRandom(type, num, season);
     }
 
     public Reward selectRewardById(int id) {
@@ -112,6 +113,14 @@ public class PamphletService extends SQLService {
     // *****************************************
     public Steve selectSteveByUid(UUID uid) {
         return steveDao.selectSteveByUid(uid.toString());
+    }
+
+    public int selectSteveSignedByUid(UUID uid) {
+        return steveDao.selectSteveSignedByUid(uid.toString());
+    }
+
+    public int selectSteveSeriesByUid(UUID uid) {
+        return steveDao.selectSteveSignedByUid(uid.toString());
     }
 
     public long insertSteve(UUID uid, String name, int season) {
