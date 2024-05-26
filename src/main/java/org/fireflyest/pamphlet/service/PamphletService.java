@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.checkerframework.checker.units.qual.s;
 import org.fireflyest.craftdatabase.annotation.Auto;
-import org.fireflyest.craftdatabase.annotation.Select;
 import org.fireflyest.craftdatabase.annotation.Service;
 import org.fireflyest.craftdatabase.sql.SQLService;
 import org.fireflyest.pamphlet.bean.Diary;
@@ -56,14 +54,17 @@ public class PamphletService extends SQLService {
         return diaryDao.updateDiaryPlaytimeAdd(target, playtime);
     }
 
+    public long updateDiaryPlaytimeQuota(String target, String quota) {
+        return diaryDao.updateDiaryPlaytimeQuota(target, quota);
+    }
 
     // *****************************************
     public Reward[] selectRewardByType(String type, int season) {
         return rewardDao.selectRewardByType(type, season);
     }
 
-    public Reward selectRewardRandom(String type, long num, int season) {
-        return rewardDao.selectRewardRandom(type, num, season);
+    public Reward selectRewardRandom(String type, String symbol, long num, int season) {
+        return rewardDao.selectRewardRandom(type, symbol, num, season);
     }
 
     public Reward selectRewardById(int id) {
@@ -137,6 +138,10 @@ public class PamphletService extends SQLService {
 
     public long updateSteveSeriesReset(UUID uid) {
         return steveDao.updateSteveSeriesReset(uid.toString());
+    }
+
+    public long updateSeasonPlaytimeQuota(UUID uid, String quota) {
+        return steveDao.updateSeasonPlaytimeQuota(uid.toString(), quota);
     }
 
 }

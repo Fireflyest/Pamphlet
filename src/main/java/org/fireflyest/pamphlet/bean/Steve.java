@@ -34,6 +34,10 @@ public class Steve {
     @Column(defaultValue = "0")
     private int series;
 
+    // 在线奖励记录
+    @Column(defaultValue = "[]")
+    private String quota;
+
     public Steve(String uid, String name, int season) {
         this.uid = uid;
         this.name = name;
@@ -99,4 +103,12 @@ public class Steve {
         this.series = series;
     }
 
+    public String getQuota() {
+        return quota;
+    }
+
+    public void setQuota(String quota) {
+        this.quota = quota;
+    }
+    
 }

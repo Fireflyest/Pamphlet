@@ -20,8 +20,9 @@ OfflinePlayer: '§c§l#§f玩家§3%player%§f不在线或不存在'
 
 SignRemind: '§6✦§f每日奖励可以领取快去看看吧'
 SignSuccess: '§6✦§f成功签到'
-ItemReward: '§6✦§f物品奖励已放入背包'
-CommandsReward: '§6✦§f奖励已发放'
+ItemReward: '§6✦§f物品奖励§e{}§f已放入背包(§7{}§f)'
+CommandsReward: '§6✦§f奖励§e{}§f已发放(§7{}§f)'
+NullReward: '§6✦§f奖励为空'
 
 PlaytimeRemind: '§6✦§f在线奖励可以领取快去看看吧'
 

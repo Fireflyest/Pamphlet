@@ -12,6 +12,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.NumberConversions;
+import org.bukkit.util.StringUtil;
 import org.fireflyest.craftgui.api.View;
 import org.fireflyest.craftgui.api.ViewGuide;
 import org.fireflyest.craftgui.util.TranslateUtils;
@@ -21,6 +22,8 @@ import org.fireflyest.pamphlet.service.PamphletService;
 import org.fireflyest.util.ItemUtils;
 import org.fireflyest.util.RandomUtils;
 import org.fireflyest.util.SerializationUtil;
+import org.fireflyest.util.StringUtils;
+import org.fireflyest.util.TimeUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -58,9 +61,10 @@ public class RewardView implements View<RewardPage> {
      * @param player 玩家
      * @param reward 奖励
      */
-    public static void handOutReward(@Nonnull Player player, @Nullable Reward reward) {
+    public static boolean handOutReward(@Nonnull Player player, @Nullable Reward reward) {
         if (reward == null) {
-            return;
+            player.sendMessage(Language.NULL_REWARD);
+            return false;
         }
         String commands = reward.getCommands();
         // 物品奖励或者指令奖励
@@ -76,7 +80,7 @@ public class RewardView implements View<RewardPage> {
             if (rewardItemName == null || "".equals(rewardItemName)) {
                 rewardItemName = TranslateUtils.translate(rewardItem.getType());
             }
-            player.sendMessage(Language.ITEM_REWARD + "(" + rewardItemName + ")");
+            player.sendMessage(StringUtils.format(Language.ITEM_REWARD, rewardItemName, rewardType(reward)));
         } else {
             Gson gson = new Gson();
             List<String> commandsList = gson.fromJson(commands, new TypeToken<List<String>>() {}.getType());
@@ -88,8 +92,32 @@ public class RewardView implements View<RewardPage> {
             }
             // 奖励提示
             String rewardItemName = reward.getName();
-            player.sendMessage(Language.COMMANDS_REWARD + "(" + rewardItemName + ")");
+            player.sendMessage(StringUtils.format(Language.COMMANDS_REWARD, rewardItemName, rewardType(reward)));
         }
+        return true;
+    }
+
+    /**
+     * 获取奖励的获取条件类型
+     * @param reward 奖励
+     * @return 奖励条件
+     */
+    private static String rewardType(Reward reward) {
+        switch (reward.getType()) {
+            case RewardPage.REWARD_SIGN:
+                return "每日签到";
+            case RewardPage.REWARD_SERIES_SIGN:
+                return "连续签到" + reward.getNum() + "次";
+            case RewardPage.REWARD_CUMULATIVE_SIGN:
+                return "周目累计签到" + reward.getNum() + "次";
+            case RewardPage.REWARD_PLAYTIME:
+                return "当天在线" + TimeUtils.duration(reward.getNum());
+            case RewardPage.REWARD_SEASON_PLAYTIME:
+                return "周目累计在线" + TimeUtils.duration(reward.getNum());
+            default:
+                break;
+        }
+        return null;
     }
 
     /**

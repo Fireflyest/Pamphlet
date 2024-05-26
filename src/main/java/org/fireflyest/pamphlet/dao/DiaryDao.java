@@ -24,4 +24,7 @@ public interface DiaryDao {
     @Update("UPDATE `pamphlet_diary` SET `playtime`=`playtime`+${playtime} WHERE `target`='${target}';")
     long updateDiaryPlaytimeAdd(String target, long playtime);
 
+    @Update("UPDATE `pamphlet_diary` SET `quota`='${quota}' WHERE `target`='${target}';")
+    long updateDiaryPlaytimeQuota(String target, String quota);
+
 }

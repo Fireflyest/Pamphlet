@@ -57,15 +57,19 @@ public class SignCommand extends SubCommand {
         service.updateDiarySign(diaryTarget);
         sender.sendMessage(Language.SIGN_SUCCESS);
         // 签到奖励
-       Reward signReward = service.selectRewardRandom(RewardPage.REWARD_SIGN, 0, Config.SEASON);
-       RewardView.handOutReward(player, signReward);
+       Reward signReward = service.selectRewardRandom(RewardPage.REWARD_SIGN, "=", 0, Config.SEASON);
+       if (signReward != null) {
+            RewardView.handOutReward(player, signReward);
+       }
 
         // 累计签到
         service.updateSteveSignedAdd(player.getUniqueId());
         // 累计签到奖励
         int signed = service.selectSteveSignedByUid(player.getUniqueId());
-        Reward signedReward = service.selectRewardRandom(RewardPage.REWARD_CUMULATIVE_SIGN, signed, Config.SEASON);
-        RewardView.handOutReward(player, signedReward);
+        Reward signedReward = service.selectRewardRandom(RewardPage.REWARD_CUMULATIVE_SIGN, "=", signed, Config.SEASON);
+        if (signedReward != null) {
+            RewardView.handOutReward(player, signedReward);
+        }
 
 
 
@@ -78,7 +82,7 @@ public class SignCommand extends SubCommand {
 
             // 连续签到奖励
             int series = service.selectSteveSeriesByUid(player.getUniqueId());
-            Reward seriesReward = service.selectRewardRandom(RewardPage.REWARD_SERIES_SIGN, series, Config.SEASON);
+            Reward seriesReward = service.selectRewardRandom(RewardPage.REWARD_SERIES_SIGN, "=", series, Config.SEASON);
             RewardView.handOutReward(player, seriesReward);
         } else {
             service.updateSteveSeriesReset(player.getUniqueId());

@@ -15,7 +15,6 @@ import org.fireflyest.pamphlet.command.PlaytimeCommand;
 import org.fireflyest.pamphlet.command.RewardCommand;
 import org.fireflyest.pamphlet.command.SignCommand;
 import org.fireflyest.pamphlet.data.Config;
-import org.fireflyest.pamphlet.data.Language;
 import org.fireflyest.pamphlet.data.PamphletYaml;
 import org.fireflyest.pamphlet.gui.EditView;
 import org.fireflyest.pamphlet.gui.ExchangeView;
@@ -154,7 +153,7 @@ public final class Pamphlet extends JavaPlugin {
         if (pamphlet != null) {
             PamphletCommand pamphletCommand = new PamphletCommand(guide);
             SignCommand signCommand = new SignCommand(service, guide);
-            PlaytimeCommand playtimeCommand = new PlaytimeCommand();
+            PlaytimeCommand playtimeCommand = new PlaytimeCommand(service, guide);
             RewardCommand rewardCommand = new RewardCommand(guide);
             rewardCommand.setArgument(0, new NumberArgs());
             pamphletCommand.addSubCommand("sign", signCommand);

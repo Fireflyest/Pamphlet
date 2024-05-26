@@ -164,12 +164,12 @@ public class ExpPage extends TemplatePage {
         // 右侧在线奖励
         String playtimeKey = Pamphlet.KEY_PLAYER_PLAYTIME + target;
         long todayPlaytime = guide.getViewVariable().age(playtimeKey) * 1000 + NumberConversions.toLong(guide.getViewVariable().get(playtimeKey));
-        long seasonPlaytime = service.selectSeasonPlaytime(target, Config.SEASON);
+        long seasonPlaytime = service.selectSeasonPlaytime(target, Config.SEASON) + todayPlaytime;
         ItemStack playtimeItem = new ButtonItemBuilder(Material.CLOCK)
             .actionPlayerCommand("pamphlet playtime")
             .name("&f[&a在线奖励&f]")
             .lore(String.format("&7今天在线&9%s", TimeUtils.duration(todayPlaytime)))
-            .lore(String.format("&7周目总在线&9%s", TimeUtils.duration(seasonPlaytime + todayPlaytime)))
+            .lore(String.format("&7周目总在线&9%s", TimeUtils.duration(seasonPlaytime)))
             .build();
         asyncButtonMap.put(7, playtimeItem);
     }

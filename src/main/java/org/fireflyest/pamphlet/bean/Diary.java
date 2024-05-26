@@ -18,6 +18,10 @@ public class Diary {
     @Column(defaultValue = "0")
     private long playtime;
 
+    // 在线奖励记录
+    @Column(defaultValue = "[]")
+    private String quota;
+
     @Column(defaultValue = "0")
     private int season;
 
@@ -59,6 +63,14 @@ public class Diary {
 
     public void setSeason(int season) {
         this.season = season;
+    }
+
+    public String getQuota() {
+        return quota;
+    }
+
+    public void setQuota(String quota) {
+        this.quota = quota;
     }
 
 }

@@ -13,8 +13,8 @@ public interface RewardDao {
     @Select("SELECT * FROM `pamphlet_reward` WHERE `type`='${type}' AND `season`=${season};")
     Reward[] selectRewardByType(String type, int season);
 
-    @Select("SELECT * FROM `pamphlet_reward` WHERE `type`='${type}' AND `num`=${num} AND `season`=${season} ORDER BY RAND() LIMIT 1;")
-    Reward selectRewardRandom(String type, long num, int season);
+    @Select("SELECT * FROM `pamphlet_reward` WHERE `type`='${type}' AND `num`${symbol}${num} AND `season`=${season} ORDER BY RAND() LIMIT 1;")
+    Reward selectRewardRandom(String type, String symbol, long num, int season);
 
     @Select("SELECT * FROM `pamphlet_reward` WHERE `id`=${id}")
     Reward selectRewardById(long id);
