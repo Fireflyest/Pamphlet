@@ -29,6 +29,12 @@ public interface SteveDao {
 
     @Update("UPDATE `pamphlet_steve` SET `series`=1 WHERE `uid`='${uid}';")
     long updateSteveSeriesReset(String uid);    
+    
+    @Update("UPDATE `pamphlet_steve` SET `exp`=`exp`+${exp} WHERE `uid`='${uid}';")
+    long updateSteveExpAdd(String uid, int exp);
+    
+    @Update("UPDATE `pamphlet_steve` SET `exp`=0 WHERE `uid`='${uid}';")
+    long updateSteveExpReset(String uid);
 
     @Update("UPDATE `pamphlet_steve` SET `quota`='${quota}' WHERE `uid`='${uid}';")
     long updateSeasonPlaytimeQuota(String uid, String quota);

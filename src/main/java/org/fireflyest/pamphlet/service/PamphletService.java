@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.fireflyest.craftdatabase.annotation.Auto;
 import org.fireflyest.craftdatabase.annotation.Service;
+import org.fireflyest.craftdatabase.annotation.Update;
 import org.fireflyest.craftdatabase.sql.SQLService;
 import org.fireflyest.pamphlet.bean.Diary;
 import org.fireflyest.pamphlet.bean.Reward;
@@ -138,6 +139,14 @@ public class PamphletService extends SQLService {
 
     public long updateSteveSeriesReset(UUID uid) {
         return steveDao.updateSteveSeriesReset(uid.toString());
+    }
+
+    public long updateSteveExpAdd(UUID uid, int exp) {
+        return steveDao.updateSteveExpAdd(uid.toString(), exp);
+    }
+
+    public long updateSteveExpReset(UUID uid) {
+        return steveDao.updateSteveExpReset(uid.toString());
     }
 
     public long updateSeasonPlaytimeQuota(UUID uid, String quota) {

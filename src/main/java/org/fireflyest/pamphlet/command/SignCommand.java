@@ -58,9 +58,7 @@ public class SignCommand extends SubCommand {
         sender.sendMessage(Language.SIGN_SUCCESS);
         // 签到奖励
        Reward signReward = service.selectRewardRandom(RewardPage.REWARD_SIGN, "=", 0, Config.SEASON);
-       if (signReward != null) {
-            RewardView.handOutReward(player, signReward);
-       }
+       RewardView.handOutReward(player, signReward);
 
         // 累计签到
         service.updateSteveSignedAdd(player.getUniqueId());
@@ -83,10 +81,15 @@ public class SignCommand extends SubCommand {
             // 连续签到奖励
             int series = service.selectSteveSeriesByUid(player.getUniqueId());
             Reward seriesReward = service.selectRewardRandom(RewardPage.REWARD_SERIES_SIGN, "=", series, Config.SEASON);
-            RewardView.handOutReward(player, seriesReward);
+            if (seriesReward != null) {
+                RewardView.handOutReward(player, seriesReward);
+            }
         } else {
             service.updateSteveSeriesReset(player.getUniqueId());
         }
+
+        // 手册经验
+        service.updateSteveExpAdd(player.getUniqueId(), 20);
 
         // 刷新页面
         guide.refreshPage(sender.getName());

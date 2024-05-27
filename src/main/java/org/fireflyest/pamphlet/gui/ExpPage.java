@@ -22,6 +22,7 @@ import org.fireflyest.pamphlet.data.Config;
 import org.fireflyest.pamphlet.data.Language;
 import org.fireflyest.pamphlet.service.PamphletService;
 import org.fireflyest.util.SerializationUtil;
+import org.fireflyest.util.StringUtils;
 import org.fireflyest.util.TimeUtils;
 
 public class ExpPage extends TemplatePage {
@@ -89,7 +90,7 @@ public class ExpPage extends TemplatePage {
         this.addPlayerButton();
 
         // 左侧导航按钮
-        this.addNavigationButton();
+        this.addNavigationButton(steve);
 
         return asyncButtonMap;
     }
@@ -117,9 +118,11 @@ public class ExpPage extends TemplatePage {
     /**
      * 左侧导航
      */
-    private void addNavigationButton() {
+    private void addNavigationButton(Steve steve) {
         ItemStack expItem = new ItemBuilder(Material.ENCHANTED_BOOK)
             .name("&f[&a手册&f]")
+            .lore("&fLv" + (steve.getExp() / 100))
+            .lore(StringUtils.stringProgress((steve.getExp() % 100) / 100.0, "&7", "&f", 20))
             .build();
         asyncButtonMap.put(0, expItem);
         ItemStack progressItem = new ButtonItemBuilder(Material.ANVIL)
@@ -154,7 +157,7 @@ public class ExpPage extends TemplatePage {
                 .build();
         } else {
             signItem = new ItemBuilder(Material.KNOWLEDGE_BOOK)
-                .name("&f[&a已签到&f]")
+                .name("&f[&a签到完成&f]")
                 .lore(String.format("&7连续签到&9%s&7天", steve.getSeries()))
                 .lore(String.format("&7周目总签到&9%s&7天", steve.getSigned()))
                 .build();
