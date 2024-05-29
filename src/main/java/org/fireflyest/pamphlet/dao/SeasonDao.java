@@ -21,4 +21,10 @@ public interface SeasonDao {
     @Update("UPDATE `pamphlet_season` SET `outset`=${outset} WHERE `id`=${id};")
     long updateSeasonOutset(int id, long outset);
 
+    @Update("UPDATE `pamphlet_season` SET `players`=`players`+1 WHERE `id`=${id};")
+    long updateSeasonPlayersAdd(int id);
+
+    @Update("UPDATE `pamphlet_season` SET `advance`=`advance`+1 WHERE `id`=${id};")
+    long updateSeasonAdvanceAdd(int id);
+
 }

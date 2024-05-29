@@ -163,6 +163,10 @@ public class PamphletService extends SQLService {
         return steveDao.updateSeasonPlaytimeQuota(uid.toString(), quota);
     }
 
+    public long deleteSteveByUid(UUID uid) {
+        return steveDao.deleteSteveByUid(uid.toString());
+    }
+
     // *****************************************
     public Season selectSeasonById(int id) {
         return seasonDao.selectSeasonById(id);
@@ -178,6 +182,14 @@ public class PamphletService extends SQLService {
 
     public long updateSeasonOutset(int id, long outset) {
         return seasonDao.updateSeasonOutset(id, outset);
+    }
+
+    public long updateSeasonPlayersAdd(int id) {
+        return seasonDao.updateSeasonPlayersAdd(id);
+    }
+
+    public long updateSeasonAdvanceAdd(int id) {
+        return seasonDao.updateSeasonAdvanceAdd(id);
     }
 
 }

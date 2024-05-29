@@ -1,6 +1,7 @@
 package org.fireflyest.pamphlet.dao;
 
 import org.fireflyest.craftdatabase.annotation.Dao;
+import org.fireflyest.craftdatabase.annotation.Delete;
 import org.fireflyest.craftdatabase.annotation.Insert;
 import org.fireflyest.craftdatabase.annotation.Select;
 import org.fireflyest.craftdatabase.annotation.Update;
@@ -41,5 +42,8 @@ public interface SteveDao {
 
     @Update("UPDATE `pamphlet_steve` SET `quota`='${quota}' WHERE `uid`='${uid}';")
     long updateSeasonPlaytimeQuota(String uid, String quota);
+
+    @Delete("DELETE FROM `pamphlet_steve` WHERE `uid`='${uid}'")
+    long deleteSteveByUid(String uid);
 
 }
