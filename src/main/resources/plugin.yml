@@ -11,11 +11,16 @@ commands:
     description: 手册主指令
     aliases: [pp]
     usage: /pamphlet
+  season:
+    description: 周目配置指令
+    aliases: [ss]
+    usage: /season
+    permission: op
 
 permissions:
-  activity.reward:
+  pamphlet.reward:
     description: 管理奖励
     default: op
-  activity.rank:
+  pamphlet.rank:
     description: 查看排行榜
     default: true

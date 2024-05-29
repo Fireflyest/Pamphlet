@@ -115,6 +115,8 @@ public class RewardPage extends TemplatePage {
             .build();
         buttonMap.put(2, playtimeItem);
 
+        // 右侧赛季信息
+        
     }
 
     /**

@@ -41,6 +41,12 @@ public class PlaytimeCommand extends SubCommand {
             return false;
         }
 
+        // 是否进行周目更新
+        if (service.selectSteveSeasonByUid(player.getUniqueId()) != Config.SEASON) {
+            player.sendMessage(Language.SEASON_RESET);
+            return true;
+        }
+
         // 今天数据
         String diaryTarget = player.getUniqueId().toString() + "-" + TimeUtils.getLocalDate();
         Diary todayDiary = service.selectDiaryByTarget(diaryTarget);

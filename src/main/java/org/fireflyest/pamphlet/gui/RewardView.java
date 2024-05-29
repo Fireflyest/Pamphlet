@@ -63,7 +63,7 @@ public class RewardView implements View<RewardPage> {
      */
     public static boolean handOutReward(@Nonnull Player player, @Nullable Reward reward) {
         if (reward == null) {
-            player.sendMessage(Language.NULL_REWARD);
+            player.sendMessage(Language.REWARD_NULL);
             return false;
         }
         String commands = reward.getCommands();
@@ -80,7 +80,7 @@ public class RewardView implements View<RewardPage> {
             if (rewardItemName == null || "".equals(rewardItemName)) {
                 rewardItemName = TranslateUtils.translate(rewardItem.getType());
             }
-            player.sendMessage(StringUtils.format(Language.ITEM_REWARD, rewardItemName, rewardType(reward)));
+            player.sendMessage(StringUtils.format(Language.REWARD_ITEM, rewardItemName, rewardType(reward)));
         } else {
             Gson gson = new Gson();
             List<String> commandsList = gson.fromJson(commands, new TypeToken<List<String>>() {}.getType());
@@ -92,7 +92,7 @@ public class RewardView implements View<RewardPage> {
             }
             // 奖励提示
             String rewardItemName = reward.getName();
-            player.sendMessage(StringUtils.format(Language.COMMANDS_REWARD, rewardItemName, rewardType(reward)));
+            player.sendMessage(StringUtils.format(Language.REWARD_COMMANDS, rewardItemName, rewardType(reward)));
         }
         return true;
     }

@@ -18,6 +18,9 @@ public interface SteveDao {
     @Select("SELECT `series` FROM `pamphlet_steve` WHERE `uid`='${uid}';")
     int selectSteveSeriesByUid(String uid);
 
+    @Select("SELECT `season` FROM `pamphlet_steve` WHERE `uid`='${uid}';")
+    int selectSteveSeasonByUid(String uid);
+
     @Insert("INSERT INTO `pamphlet_steve` (`uid`,`name`,`season`) VALUES ('${uid}','${name}',${season});")
     long insertSteve(String uid, String name, int season);
     

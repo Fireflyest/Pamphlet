@@ -12,10 +12,12 @@ public class Language {
     public static String SIGN_SUCCESS;
     public static String SIGN_ALREADY;
     public static String SIGN_REMIND;
-    public static String ITEM_REWARD;
-    public static String COMMANDS_REWARD;
-    public static String NULL_REWARD;
-    
+    public static String REWARD_ITEM;
+    public static String REWARD_COMMANDS;
+    public static String REWARD_NULL;
+    public static String SEASON_RESET;
+    public static String SEASON_CREATE;
+    public static String SEASON_ALTER;
     public static String PLAYTIME_REMIND;
 
     public static String TITLE_EXP;

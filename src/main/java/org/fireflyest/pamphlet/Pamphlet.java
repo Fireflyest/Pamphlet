@@ -13,6 +13,10 @@ import org.fireflyest.pamphlet.bean.Diary;
 import org.fireflyest.pamphlet.command.PamphletCommand;
 import org.fireflyest.pamphlet.command.PlaytimeCommand;
 import org.fireflyest.pamphlet.command.RewardCommand;
+import org.fireflyest.pamphlet.command.SeasonAlterCommand;
+import org.fireflyest.pamphlet.command.SeasonCommand;
+import org.fireflyest.pamphlet.command.SeasonCreateCommand;
+import org.fireflyest.pamphlet.command.SeasonResetCommand;
 import org.fireflyest.pamphlet.command.SignCommand;
 import org.fireflyest.pamphlet.data.Config;
 import org.fireflyest.pamphlet.data.PamphletYaml;
@@ -161,6 +165,18 @@ public final class Pamphlet extends JavaPlugin {
             pamphletCommand.addSubCommand("reward", rewardCommand);
             pamphlet.setExecutor(pamphletCommand);
             pamphlet.setTabCompleter(pamphletCommand);
+        }
+        PluginCommand season = this.getCommand("season");
+        if (season != null) {
+            SeasonCommand seasonCommand = new SeasonCommand();
+            SeasonAlterCommand seasonAlterCommand = new SeasonAlterCommand(service);
+            SeasonCreateCommand seasonCreateCommand = new SeasonCreateCommand(service);
+            SeasonResetCommand seasonResetCommand = new SeasonResetCommand(service);
+            seasonCommand.addSubCommand("alter", seasonAlterCommand);
+            seasonCommand.addSubCommand("create", seasonCreateCommand);
+            seasonCommand.addSubCommand("reset", seasonResetCommand);
+            season.setExecutor(seasonCommand);
+            season.setTabCompleter(seasonCommand);
         }
     }
 

@@ -4,16 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.bukkit.inventory.ItemStack;
 import org.fireflyest.craftdatabase.annotation.Auto;
 import org.fireflyest.craftdatabase.annotation.Service;
-import org.fireflyest.craftdatabase.annotation.Update;
 import org.fireflyest.craftdatabase.sql.SQLService;
 import org.fireflyest.pamphlet.bean.Diary;
 import org.fireflyest.pamphlet.bean.Reward;
+import org.fireflyest.pamphlet.bean.Season;
 import org.fireflyest.pamphlet.bean.Steve;
 import org.fireflyest.pamphlet.dao.DiaryDao;
 import org.fireflyest.pamphlet.dao.RewardDao;
+import org.fireflyest.pamphlet.dao.SeasonDao;
 import org.fireflyest.pamphlet.dao.SteveDao;
+import org.fireflyest.util.SerializationUtil;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -33,6 +36,9 @@ public class PamphletService extends SQLService {
 
     @Auto
     public SteveDao steveDao;
+
+    @Auto
+    public SeasonDao seasonDao;
     
     // *****************************************
     public Diary selectDiaryByTarget(String target) {
@@ -125,6 +131,10 @@ public class PamphletService extends SQLService {
         return steveDao.selectSteveSignedByUid(uid.toString());
     }
 
+    public int selectSteveSeasonByUid(UUID uid) {
+        return steveDao.selectSteveSeasonByUid(uid.toString());
+    }
+
     public long insertSteve(UUID uid, String name, int season) {
         return steveDao.insertSteve(uid.toString(), name, season);
     }
@@ -151,6 +161,23 @@ public class PamphletService extends SQLService {
 
     public long updateSeasonPlaytimeQuota(UUID uid, String quota) {
         return steveDao.updateSeasonPlaytimeQuota(uid.toString(), quota);
+    }
+
+    // *****************************************
+    public Season selectSeasonById(int id) {
+        return seasonDao.selectSeasonById(id);
+    }
+    
+    public long insertSeason(String name, ItemStack item) {
+        return seasonDao.insertSeason(name, SerializationUtil.serialize(item));
+    }
+
+    public long updateSeasonDesc(int id, String desc) {
+        return seasonDao.updateSeasonDesc(id, desc);
+    }
+
+    public long updateSeasonOutset(int id, long outset) {
+        return seasonDao.updateSeasonOutset(id, outset);
     }
 
 }

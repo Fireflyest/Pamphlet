@@ -38,6 +38,9 @@ public class Steve {
     @Column(defaultValue = "[]")
     private String quota;
 
+    @Column(defaultValue = "0")
+    private boolean advance;
+
     public Steve(String uid, String name, int season) {
         this.uid = uid;
         this.name = name;
@@ -109,6 +112,14 @@ public class Steve {
 
     public void setQuota(String quota) {
         this.quota = quota;
+    }
+
+    public boolean isAdvance() {
+        return advance;
+    }
+
+    public void setAdvance(boolean advance) {
+        this.advance = advance;
     }
     
 }

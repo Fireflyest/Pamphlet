@@ -36,9 +36,7 @@ public class PlayerEventListener implements Listener {
         Steve steve = service.selectSteveByUid(player.getUniqueId());
         // 新玩家插入数据，否则更新旧周目数据
         if (steve == null) {
-            service.insertSteve(player.getUniqueId(), player.getName(), Config.SEASON);
-        } else if (steve.getSeason() < Config.SEASON) {
-            // TODO: 过周目处理数据
+            service.insertSteve(player.getUniqueId(), player.getName(), -1 );
         }
 
         // 玩家是否当天已签到，未签发送提示
