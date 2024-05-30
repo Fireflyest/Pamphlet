@@ -18,6 +18,7 @@ public class Language {
     public static String SEASON_RESET;
     public static String SEASON_CREATE;
     public static String SEASON_ALTER;
+    public static String SEASON_NULL;
     public static String PLAYTIME_REMIND;
 
     public static String TITLE_EXP;

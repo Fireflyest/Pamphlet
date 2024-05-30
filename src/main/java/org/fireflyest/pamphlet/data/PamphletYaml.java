@@ -24,5 +24,9 @@ public class PamphletYaml extends YamlService {
     public ItemBuilder getItemBuilder(String name) {
         return itemMap.get(name);
     }
+
+    public void seasonAlter(int season) {
+        this.setConfigData("Season", season);
+    }
     
 }

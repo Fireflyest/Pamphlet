@@ -14,6 +14,10 @@ public class Config {
 
     public static int SEASON;
 
+    public static void setSeason(int season) {
+        SEASON = season;
+    }
+
     private Config() {
         
     }

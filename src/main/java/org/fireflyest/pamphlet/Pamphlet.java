@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.fireflyest.craftcommand.argument.NumberArgs;
+import org.fireflyest.craftcommand.argument.PlayerArgs;
 import org.fireflyest.craftdatabase.sql.SQLConnector;
 import org.fireflyest.craftgui.api.ViewGuide;
 import org.fireflyest.pamphlet.bean.Diary;
@@ -169,9 +170,11 @@ public final class Pamphlet extends JavaPlugin {
         PluginCommand season = this.getCommand("season");
         if (season != null) {
             SeasonCommand seasonCommand = new SeasonCommand();
-            SeasonAlterCommand seasonAlterCommand = new SeasonAlterCommand(service);
+            SeasonAlterCommand seasonAlterCommand = new SeasonAlterCommand(service, yaml);
+            seasonAlterCommand.setArgument(0, new NumberArgs());
             SeasonCreateCommand seasonCreateCommand = new SeasonCreateCommand(service);
-            SeasonResetCommand seasonResetCommand = new SeasonResetCommand(service);
+            SeasonResetCommand seasonResetCommand = new SeasonResetCommand(service, guide);
+            seasonResetCommand.setArgument(0, new PlayerArgs());
             seasonCommand.addSubCommand("alter", seasonAlterCommand);
             seasonCommand.addSubCommand("create", seasonCreateCommand);
             seasonCommand.addSubCommand("reset", seasonResetCommand);

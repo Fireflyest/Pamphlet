@@ -6,15 +6,19 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.fireflyest.craftcommand.command.SubCommand;
+import org.fireflyest.craftgui.api.ViewGuide;
+import org.fireflyest.pamphlet.Pamphlet;
 import org.fireflyest.pamphlet.data.Config;
 import org.fireflyest.pamphlet.service.PamphletService;
 
 public class SeasonResetCommand extends SubCommand {
 
     private final PamphletService service;
+    private final ViewGuide guide;
 
-    public SeasonResetCommand(PamphletService service) {
+    public SeasonResetCommand(PamphletService service, ViewGuide guide) {
         this.service = service;
+        this.guide = guide;
     }
 
     @Override
@@ -37,6 +41,10 @@ public class SeasonResetCommand extends SubCommand {
         service.insertSteve(player.getUniqueId(), player.getName(), Config.SEASON);
         // 周目统计
         service.updateSeasonPlayersAdd(Config.SEASON);
+
+        // 打开界面
+        guide.openView(player, Pamphlet.VIEW_EXP, player.getUniqueId().toString());
+
         return true;
     }
     
