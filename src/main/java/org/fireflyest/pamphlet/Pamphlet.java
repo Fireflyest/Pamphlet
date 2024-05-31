@@ -15,6 +15,7 @@ import org.fireflyest.pamphlet.command.PamphletCommand;
 import org.fireflyest.pamphlet.command.PlaytimeCommand;
 import org.fireflyest.pamphlet.command.RewardCommand;
 import org.fireflyest.pamphlet.command.SeasonAlterCommand;
+import org.fireflyest.pamphlet.command.SeasonArgument;
 import org.fireflyest.pamphlet.command.SeasonCommand;
 import org.fireflyest.pamphlet.command.SeasonCreateCommand;
 import org.fireflyest.pamphlet.command.SeasonResetCommand;
@@ -26,6 +27,7 @@ import org.fireflyest.pamphlet.gui.ExchangeView;
 import org.fireflyest.pamphlet.gui.ExpView;
 import org.fireflyest.pamphlet.gui.ProgressView;
 import org.fireflyest.pamphlet.gui.RewardView;
+import org.fireflyest.pamphlet.gui.SeasonView;
 import org.fireflyest.pamphlet.listener.PlayerEventListener;
 import org.fireflyest.pamphlet.service.PamphletService;
 import org.fireflyest.util.TimeUtils;
@@ -75,6 +77,7 @@ public final class Pamphlet extends JavaPlugin {
     public static final String VIEW_EXCHANGE = "pamphlet.exchange";
     public static final String VIEW_REWARD = "pamphlet.reward";
     public static final String VIEW_EDIT = "pamphlet.edit";
+    public static final String VIEW_SEASON = "pamphlet.season";
 
     public static Pamphlet getPlugin() {
         return getPlugin(Pamphlet.class);
@@ -151,12 +154,13 @@ public final class Pamphlet extends JavaPlugin {
         guide.addView(VIEW_EXCHANGE, new ExchangeView(service));
         guide.addView(VIEW_REWARD, new RewardView(service, guide));
         guide.addView(VIEW_EDIT, new EditView(service, guide));
+        guide.addView(VIEW_SEASON, new SeasonView(service));
     }
     
     private void setupCommand() {
         PluginCommand pamphlet = this.getCommand("pamphlet");
         if (pamphlet != null) {
-            PamphletCommand pamphletCommand = new PamphletCommand(guide);
+            PamphletCommand pamphletCommand = new PamphletCommand(service, guide);
             SignCommand signCommand = new SignCommand(service, guide);
             PlaytimeCommand playtimeCommand = new PlaytimeCommand(service, guide);
             RewardCommand rewardCommand = new RewardCommand(guide);
@@ -171,7 +175,7 @@ public final class Pamphlet extends JavaPlugin {
         if (season != null) {
             SeasonCommand seasonCommand = new SeasonCommand();
             SeasonAlterCommand seasonAlterCommand = new SeasonAlterCommand(service, yaml);
-            seasonAlterCommand.setArgument(0, new NumberArgs());
+            seasonAlterCommand.setArgument(0, new SeasonArgument(service));
             SeasonCreateCommand seasonCreateCommand = new SeasonCreateCommand(service);
             SeasonResetCommand seasonResetCommand = new SeasonResetCommand(service, guide);
             seasonResetCommand.setArgument(0, new PlayerArgs());

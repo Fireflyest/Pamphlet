@@ -153,13 +153,13 @@ public class ExpPage extends TemplatePage {
             signItem = new ButtonItemBuilder(Material.WRITABLE_BOOK)
                 .actionPlayerCommand("pamphlet sign")
                 .name("&f[&a点击签到&f]")
-                .lore("&7点击获取每日礼包")
+                .lore("&f点击获取每日礼包")
                 .build();
         } else {
             signItem = new ItemBuilder(Material.KNOWLEDGE_BOOK)
                 .name("&f[&a签到完成&f]")
-                .lore(String.format("&7连续签到&9%s&7天", steve.getSeries()))
-                .lore(String.format("&7周目总签到&9%s&7天", steve.getSigned()))
+                .lore(String.format("&f连续签到&9%s&7天", steve.getSeries()))
+                .lore(String.format("&f周目总签到&9%s&7天", steve.getSigned()))
                 .build();
         }
         asyncButtonMap.put(8, signItem);
@@ -171,8 +171,8 @@ public class ExpPage extends TemplatePage {
         ItemStack playtimeItem = new ButtonItemBuilder(Material.CLOCK)
             .actionPlayerCommand("pamphlet playtime")
             .name("&f[&a在线奖励&f]")
-            .lore(String.format("&7今天在线&9%s", TimeUtils.duration(todayPlaytime)))
-            .lore(String.format("&7周目总在线&9%s", TimeUtils.duration(seasonPlaytime)))
+            .lore(String.format("&f今天在线&9%s", TimeUtils.duration(todayPlaytime)))
+            .lore(String.format("&f周目总在线&9%s", TimeUtils.duration(seasonPlaytime)))
             .build();
         asyncButtonMap.put(7, playtimeItem);
     }

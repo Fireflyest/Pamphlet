@@ -8,22 +8,23 @@ import javax.annotation.Nullable;
 import org.fireflyest.craftgui.api.View;
 import org.fireflyest.pamphlet.service.PamphletService;
 
-public class ProgressView implements View<ProgressPage> {
+public class SeasonView implements View<SeasonPage> {
 
-    private final Map<String, ProgressPage> pageMap = new HashMap<>();
+    private final Map<String, SeasonPage> pageMap = new HashMap<>();
 
     private final PamphletService service;
-
-    public ProgressView(PamphletService service) {
+    
+    public SeasonView(PamphletService service) {
         this.service = service;
     }
 
     /**
-     * target应为玩家uuid
+     * target为玩家uuid
      */
     @Override
-    public ProgressPage getFirstPage(@Nullable String target) {
-        return pageMap.computeIfAbsent(target, k -> new ProgressPage(target, service));
+    @Nullable
+    public SeasonPage getFirstPage(@Nullable String target) {
+        return pageMap.computeIfAbsent(target, k -> new SeasonPage(target, service));
     }
 
     @Override

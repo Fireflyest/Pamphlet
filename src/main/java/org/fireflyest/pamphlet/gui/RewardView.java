@@ -40,10 +40,12 @@ public class RewardView implements View<RewardPage> {
         this.guide = guide;
     }
 
+    /**
+     * target为周目号
+     */
     @Override
     public RewardPage getFirstPage(@Nullable String target) {
         if (rewardPage == null) {
-            // target为周目号
             rewardPage = new RewardPage(target, service, guide);
         }
         return rewardPage;

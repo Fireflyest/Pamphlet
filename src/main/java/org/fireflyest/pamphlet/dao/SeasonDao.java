@@ -11,7 +11,10 @@ public interface SeasonDao {
 
     @Select("SELECT * FROM `pamphlet_season` WHERE id=${id};")
     Season selectSeasonById(int id);
-    
+
+    @Select("SELECT `id` FROM `pamphlet_season` LIMIT 30;")
+    int[] selectSeasonIds();
+
     @Insert("INSERT INTO `pamphlet_season` (`name`,`item`) VALUES ('${name}','${item}');")
     long insertSeason(String name, String item);
 

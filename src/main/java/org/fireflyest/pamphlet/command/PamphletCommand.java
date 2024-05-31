@@ -7,13 +7,17 @@ import org.bukkit.entity.Player;
 import org.fireflyest.craftcommand.command.ComplexCommand;
 import org.fireflyest.craftgui.api.ViewGuide;
 import org.fireflyest.pamphlet.Pamphlet;
+import org.fireflyest.pamphlet.data.Config;
 import org.fireflyest.pamphlet.data.Language;
+import org.fireflyest.pamphlet.service.PamphletService;
 
 public class PamphletCommand extends ComplexCommand {
 
+    private final PamphletService service;
     private final ViewGuide guide;
 
-    public PamphletCommand(ViewGuide guide) {
+    public PamphletCommand(PamphletService service, ViewGuide guide) {
+        this.service = service;
         this.guide = guide;
     }
 
@@ -25,7 +29,9 @@ public class PamphletCommand extends ComplexCommand {
             return false;
         }
 
-        guide.openView(player, Pamphlet.VIEW_EXP, player.getUniqueId().toString());
+        String view = service.selectSteveSeasonByUid(player.getUniqueId()) != Config.SEASON ? Pamphlet.VIEW_SEASON : Pamphlet.VIEW_EXP;
+
+        guide.openView(player, view, player.getUniqueId().toString());
 
         return true;
     }

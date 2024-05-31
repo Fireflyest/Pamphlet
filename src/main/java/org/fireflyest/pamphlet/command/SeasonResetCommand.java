@@ -1,5 +1,7 @@
 package org.fireflyest.pamphlet.command;
 
+import java.util.UUID;
+
 import javax.annotation.Nonnull;
 
 import org.bukkit.Bukkit;
@@ -28,7 +30,7 @@ public class SeasonResetCommand extends SubCommand {
 
     @Override
     protected boolean execute(@Nonnull CommandSender sender, @Nonnull String arg1) {
-        Player player = Bukkit.getPlayerExact(arg1);
+        Player player = Bukkit.getPlayer(UUID.fromString(arg1));
         if (player == null) {
             return false;
         }
@@ -36,11 +38,11 @@ public class SeasonResetCommand extends SubCommand {
         int playerSeason = service.selectSteveSeasonByUid(player.getUniqueId());
         if (playerSeason < Config.SEASON) {
             service.deleteSteveByUid(player.getUniqueId());
+             // 插入新的数据
+            service.insertSteve(player.getUniqueId(), player.getName(), Config.SEASON);
+            // 周目统计
+            service.updateSeasonPlayersAdd(Config.SEASON);
         }
-        // 插入新的数据
-        service.insertSteve(player.getUniqueId(), player.getName(), Config.SEASON);
-        // 周目统计
-        service.updateSeasonPlayersAdd(Config.SEASON);
 
         // 打开界面
         guide.openView(player, Pamphlet.VIEW_EXP, player.getUniqueId().toString());

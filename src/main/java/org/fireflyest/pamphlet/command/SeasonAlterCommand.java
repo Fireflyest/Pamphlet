@@ -1,5 +1,8 @@
 package org.fireflyest.pamphlet.command;
 
+import java.time.LocalDate;
+import java.time.ZoneOffset;
+
 import javax.annotation.Nonnull;
 
 import org.bukkit.command.CommandSender;
@@ -35,6 +38,9 @@ public class SeasonAlterCommand extends SubCommand {
             return false;
         }
 
+        // 当天早上八点为周目起始时间
+        service.updateSeasonOutset(seasonId, LocalDate.now().atTime(8, 0).toInstant(ZoneOffset.ofHours(8)).toEpochMilli());
+        // 更新config.yml
         yaml.seasonAlter(seasonId);
 
         Config.setSeason(seasonId);

@@ -26,6 +26,7 @@ public class Language {
     public static String TITLE_EXCHANGE;
     public static String TITLE_REWARD;
     public static String TITLE_EDIT;
+    public static String TITLE_SEASON;
 
     private Language() {
 

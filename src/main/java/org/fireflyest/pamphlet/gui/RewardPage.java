@@ -17,10 +17,13 @@ import org.fireflyest.craftgui.view.TemplatePage;
 import org.fireflyest.craftitem.builder.ItemBuilder;
 import org.fireflyest.pamphlet.Pamphlet;
 import org.fireflyest.pamphlet.bean.Reward;
+import org.fireflyest.pamphlet.bean.Season;
+import org.fireflyest.pamphlet.data.Config;
 import org.fireflyest.pamphlet.data.Language;
 import org.fireflyest.pamphlet.service.PamphletService;
 import org.fireflyest.util.ItemUtils;
 import org.fireflyest.util.SerializationUtil;
+import org.fireflyest.util.StringUtils;
 import org.fireflyest.util.TimeUtils;
 
 import com.google.gson.Gson;
@@ -30,7 +33,7 @@ public class RewardPage extends TemplatePage {
 
     private final PamphletService service;
     private final ViewGuide guide;
-    private int season;
+    private int seasonId;
     private int rewardType = 0;
     private int selectLevel = -1;
     private int outsetLevel = 1;
@@ -48,7 +51,7 @@ public class RewardPage extends TemplatePage {
         super(Language.TITLE_REWARD, target, 0, 54);
         this.service = service;
         this.guide  = guide;
-        this.season = NumberConversions.toInt(target);
+        this.seasonId = NumberConversions.toInt(target);
         
         this.refreshPage();
     }
@@ -69,6 +72,17 @@ public class RewardPage extends TemplatePage {
             // 在线奖励
             this.addPlaytimeReward();
             this.addBlank();
+        }
+
+        // 右侧赛季信息
+        Season season = service.selectSeasonById(Config.SEASON);
+        if (season != null) {
+            ItemStack seasonItem = SerializationUtil.deserializeItemStack(season.getItem());
+            ItemUtils.setDisplayName(seasonItem, "&6&l" + season.getName());
+            ItemUtils.addLore(seasonItem, "§f" + season.getDesc());
+            ItemUtils.addLore(seasonItem, StringUtils.format("§f已有§9{}§f玩家加入当前周目", String.valueOf(season.getPlayers())));
+            ItemUtils.addLore(seasonItem, StringUtils.format("§f解锁§9{}§f高级手册", String.valueOf(season.getAdvance())));
+            asyncButtonMap.put(8, seasonItem);
         }
 
         return asyncButtonMap;
@@ -114,8 +128,6 @@ public class RewardPage extends TemplatePage {
             .lore("&7奖励在奖池中随机抽取")
             .build();
         buttonMap.put(2, playtimeItem);
-
-        // 右侧赛季信息
         
     }
 
@@ -123,8 +135,8 @@ public class RewardPage extends TemplatePage {
      * 添加在线奖励
      */
     private void addPlaytimeReward() {
-        List<Reward> playtimeRewardList = Arrays.asList(service.selectRewardByType(REWARD_PLAYTIME, season));
-        List<Reward> seasonRewardList = Arrays.asList(service.selectRewardByType(REWARD_SEASON_PLAYTIME, season));
+        List<Reward> playtimeRewardList = Arrays.asList(service.selectRewardByType(REWARD_PLAYTIME, seasonId));
+        List<Reward> seasonRewardList = Arrays.asList(service.selectRewardByType(REWARD_SEASON_PLAYTIME, seasonId));
         int index1 = 18;
         int index2 = 23;
         for (int i = 0; i < 12; i++) {
@@ -135,7 +147,7 @@ public class RewardPage extends TemplatePage {
                 this.loreItemDate(slotItem1, reward);
             } else {
                 slotItem1  = new ButtonItemBuilder(Material.LIME_STAINED_GLASS_PANE)
-                    .actionPlugin(REWARD_PLAYTIME + " 300000 " + season) // level num season
+                    .actionPlugin(REWARD_PLAYTIME + " " + (1000 * 60 * 20) + " " + seasonId) // level num season
                     .name(SLOT_NAME)
                     .lore("&7在线奖励")
                     .lore(DRAG_TIP)
@@ -150,7 +162,7 @@ public class RewardPage extends TemplatePage {
                 this.loreItemDate(slotItem2, reward);
             } else {
                 slotItem2 = new ButtonItemBuilder(Material.LIME_STAINED_GLASS_PANE)
-                    .actionPlugin(REWARD_SEASON_PLAYTIME + " 3000000 " + season) // level num season
+                    .actionPlugin(REWARD_SEASON_PLAYTIME + " " + (1000 * 60 * 60 * 48) + " " + seasonId) // level num season
                     .name(SLOT_NAME)
                     .lore("&7周目在线奖励")
                     .lore(DRAG_TIP)
@@ -178,7 +190,7 @@ public class RewardPage extends TemplatePage {
     private void addSignReward() {    
         // 获取所有奖励，不足的填充插槽
         // 写的和屎山一样
-        List<Reward> signRewardList = Arrays.asList(service.selectRewardByType(REWARD_SIGN, season));
+        List<Reward> signRewardList = Arrays.asList(service.selectRewardByType(REWARD_SIGN, seasonId));
         int index0 = 18;
         for (int i = 0; i < 9; i++) {
             ItemStack slotItem0;
@@ -188,7 +200,7 @@ public class RewardPage extends TemplatePage {
                 this.loreItemDate(slotItem0, reward);
             } else {
                  slotItem0 = new ButtonItemBuilder(Material.LIME_STAINED_GLASS_PANE)
-                    .actionPlugin(REWARD_SIGN + " 0 " + season) // level num season
+                    .actionPlugin(REWARD_SIGN + " 0 " + seasonId) // level num season
                     .name(SLOT_NAME)
                     .lore("&7签到奖励")
                     .lore(DRAG_TIP)
@@ -198,8 +210,8 @@ public class RewardPage extends TemplatePage {
             if (index0 % 9 == 3) index0 += 6;
         }
 
-        List<Reward> seriesRewardList = Arrays.asList(service.selectRewardByType(REWARD_SERIES_SIGN, season));
-        List<Reward> cumulativeRewardList = Arrays.asList(service.selectRewardByType(REWARD_CUMULATIVE_SIGN, season));
+        List<Reward> seriesRewardList = Arrays.asList(service.selectRewardByType(REWARD_SERIES_SIGN, seasonId));
+        List<Reward> cumulativeRewardList = Arrays.asList(service.selectRewardByType(REWARD_CUMULATIVE_SIGN, seasonId));
         int index1 = 22;
         int index2 = 25;
         for (int i = 0; i < 6; i++) {
@@ -210,7 +222,7 @@ public class RewardPage extends TemplatePage {
                 this.loreItemDate(slotItem1, reward);
             } else {
                 slotItem1  = new ButtonItemBuilder(Material.LIME_STAINED_GLASS_PANE)
-                    .actionPlugin(REWARD_SERIES_SIGN + " 3 " + season) // level num season
+                    .actionPlugin(REWARD_SERIES_SIGN + " 3 " + seasonId) // level num season
                     .name(SLOT_NAME)
                     .lore("&7连续签到奖励")
                     .lore(DRAG_TIP)
@@ -225,7 +237,7 @@ public class RewardPage extends TemplatePage {
                 this.loreItemDate(slotItem2, reward);
             } else {
                 slotItem2 = new ButtonItemBuilder(Material.LIME_STAINED_GLASS_PANE)
-                    .actionPlugin(REWARD_CUMULATIVE_SIGN + " 7 " + season) // level num season
+                    .actionPlugin(REWARD_CUMULATIVE_SIGN + " 7 " + seasonId) // level num season
                     .name(SLOT_NAME)
                     .lore("&7累计签到奖励")
                     .lore(DRAG_TIP)
@@ -259,7 +271,7 @@ public class RewardPage extends TemplatePage {
         // 手册奖励
         String type = REWARD_LEVEL;
         // 获取所有奖励
-        for (Reward reward : service.selectRewardByType(REWARD_LEVEL, season)) {
+        for (Reward reward : service.selectRewardByType(REWARD_LEVEL, seasonId)) {
             ItemStack rewardItem = SerializationUtil.deserializeItemStack(reward.getItem());
             this.loreItemDate(rewardItem, reward);
             rewardMap.put(reward.getNum(), rewardItem);
@@ -279,7 +291,7 @@ public class RewardPage extends TemplatePage {
             ItemStack slotItem0 = rewardMap.get(num0);
             if (slotItem0 == null) {
                 slotItem0 = new ButtonItemBuilder(Material.LIME_STAINED_GLASS_PANE)
-                    .actionPlugin(type + " " + num0 + " " + season) // level num season
+                    .actionPlugin(type + " " + num0 + " " + seasonId) // level num season
                     .name(SLOT_NAME)
                     .lore("&7基础奖励")
                     .lore(DRAG_TIP)
@@ -291,7 +303,7 @@ public class RewardPage extends TemplatePage {
             ItemStack slotItem1 = rewardMap.get(num1);
             if (slotItem1 == null) {
                 slotItem1 = new ButtonItemBuilder(Material.LIME_STAINED_GLASS_PANE)
-                    .actionPlugin(type + " " + num1 + " " + season) // level num season
+                    .actionPlugin(type + " " + num1 + " " + seasonId) // level num season
                     .name(SLOT_NAME)
                     .lore("&7进阶奖励")
                     .lore(DRAG_TIP)
@@ -303,7 +315,7 @@ public class RewardPage extends TemplatePage {
             ItemStack slotItem2 = rewardMap.get(num2);
             if (slotItem2 == null) {
                 slotItem2 = new ButtonItemBuilder(Material.LIME_STAINED_GLASS_PANE)
-                    .actionPlugin(type + " " + num2 + " " + season) // level num season
+                    .actionPlugin(type + " " + num2 + " " + seasonId) // level num season
                     .name(SLOT_NAME)    
                     .build();
             }
