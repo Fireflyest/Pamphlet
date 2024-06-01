@@ -1,0 +1,14 @@
+# v${project.version}
+
+# 任务类型
+# fishing mining trade
+first: 
+  - fishing
+  - mining
+  - trade
+second: 
+  - aaa
+third: 
+  - bbb
+fourth: 
+  - ccc

@@ -107,7 +107,7 @@ public class PlaytimeCommand extends SubCommand {
                 }
             }
         }
-        return null;
+        return "[]";
     }
     
 }

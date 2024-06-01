@@ -10,6 +10,7 @@ import org.fireflyest.craftcommand.argument.NumberArgs;
 import org.fireflyest.craftcommand.argument.PlayerArgs;
 import org.fireflyest.craftdatabase.sql.SQLConnector;
 import org.fireflyest.craftgui.api.ViewGuide;
+import org.fireflyest.crafttask.api.TaskHandler;
 import org.fireflyest.pamphlet.bean.Diary;
 import org.fireflyest.pamphlet.command.PamphletCommand;
 import org.fireflyest.pamphlet.command.PlaytimeCommand;
@@ -43,9 +44,9 @@ import org.fireflyest.util.TimeUtils;
  * 1、添加好友
  * 2、拜访地皮
  * 3、参与划船竞速
- * 4、钓鱼
- * 5、挖坑
- * 6、击杀
+ * 4、钓鱼 *
+ * 5、挖矿 *
+ * 6、击杀 *
  * 7、副本通关
  * 8、邀请码
  * 9、市场交易
@@ -54,6 +55,7 @@ import org.fireflyest.util.TimeUtils;
  * 12、使用道具
  * 13、抽奖3次
  * 14、完成跑酷
+ * 15、村民交易 *
  * 赛季任务 
  * 1、在线时长
  * 手册 (100手册经验为一级)
@@ -68,6 +70,7 @@ public final class Pamphlet extends JavaPlugin {
     private ViewGuide guide;
     private PamphletYaml yaml;
     private PamphletService service;
+    private TaskHandler handler;
     private String url;
 
     public static final String KEY_PLAYER_PLAYTIME = "pamphlet.playtime."; // 玩家在线时间
@@ -155,6 +158,13 @@ public final class Pamphlet extends JavaPlugin {
         guide.addView(VIEW_REWARD, new RewardView(service, guide));
         guide.addView(VIEW_EDIT, new EditView(service, guide));
         guide.addView(VIEW_SEASON, new SeasonView(service));
+
+        RegisteredServiceProvider<TaskHandler> hrsp = Bukkit.getServicesManager().getRegistration(TaskHandler.class);
+        if (hrsp == null) {
+            this.getLogger().warning("TaskHandler not found!");
+            return;
+        }
+        handler = hrsp.getProvider();
     }
     
     private void setupCommand() {

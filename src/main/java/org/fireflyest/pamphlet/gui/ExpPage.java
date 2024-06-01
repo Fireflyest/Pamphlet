@@ -158,8 +158,8 @@ public class ExpPage extends TemplatePage {
         } else {
             signItem = new ItemBuilder(Material.KNOWLEDGE_BOOK)
                 .name("&f[&a签到完成&f]")
-                .lore(String.format("&f连续签到&9%s&7天", steve.getSeries()))
-                .lore(String.format("&f周目总签到&9%s&7天", steve.getSigned()))
+                .lore(String.format("&f连续签到&9%s&f天", steve.getSeries()))
+                .lore(String.format("&f周目总签到&9%s&f天", steve.getSigned()))
                 .build();
         }
         asyncButtonMap.put(8, signItem);

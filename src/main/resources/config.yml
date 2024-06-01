@@ -1,4 +1,4 @@
-Version: '${project.version}'
+# v${project.version}
 Debug: false
 
 # 语言文件

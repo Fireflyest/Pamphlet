@@ -1,16 +1,20 @@
 package org.fireflyest.pamphlet.bean;
 
 import org.fireflyest.craftdatabase.annotation.Column;
-import org.fireflyest.craftdatabase.annotation.Primary;
+import org.fireflyest.craftdatabase.annotation.ID;
 import org.fireflyest.craftdatabase.annotation.Table;
 
 /**
- * 玩家周目各周进度
+ * 玩家小任务进度
  */
 @Table("pamphlet_progress")
 public class Progress {
+    
+    @ID
+    @Column
+    private int id;
 
-    @Primary
+    // 归属玩家
     @Column
     private String uid;
 
@@ -18,28 +22,27 @@ public class Progress {
     private int season;
 
     @Column
-    private int one;
+    private int stage;
 
+    // 任务类型
     @Column
-    private int two;
+    private String type;
 
+    // 当前进度
     @Column
-    private int three;
+    private int reach;
 
+    // 任务总数
     @Column
-    private int four;
+    private int max;
 
-    @Column
-    private int five;
+    public int getId() {
+        return id;
+    }
 
-    @Column
-    private int six;
-
-    @Column
-    private int seven;
-
-    @Column
-    private int eight;
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getUid() {
         return uid;
@@ -57,69 +60,36 @@ public class Progress {
         this.season = season;
     }
 
-    public int getOne() {
-        return one;
+    public int getStage() {
+        return stage;
     }
 
-    public void setOne(int one) {
-        this.one = one;
+    public void setStage(int stage) {
+        this.stage = stage;
     }
 
-    public int getTwo() {
-        return two;
+    public String getType() {
+        return type;
     }
 
-    public void setTwo(int two) {
-        this.two = two;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public int getThree() {
-        return three;
+    public int getReach() {
+        return reach;
     }
 
-    public void setThree(int three) {
-        this.three = three;
+    public void setReach(int reach) {
+        this.reach = reach;
     }
 
-    public int getFour() {
-        return four;
+    public int getMax() {
+        return max;
     }
 
-    public void setFour(int four) {
-        this.four = four;
-    }
-
-    public int getFive() {
-        return five;
-    }
-
-    public void setFive(int five) {
-        this.five = five;
-    }
-
-    public int getSix() {
-        return six;
-    }
-
-    public void setSix(int six) {
-        this.six = six;
-    }
-
-    public int getSeven() {
-        return seven;
-    }
-
-    public void setSeven(int seven) {
-        this.seven = seven;
-    }
-
-    public int getEight() {
-        return eight;
-    }
-
-    public void setEight(int eight) {
-        this.eight = eight;
+    public void setMax(int max) {
+        this.max = max;
     }
 
 }
-

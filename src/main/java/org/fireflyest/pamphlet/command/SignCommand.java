@@ -63,8 +63,8 @@ public class SignCommand extends SubCommand {
         service.updateDiarySign(diaryTarget);
         sender.sendMessage(Language.SIGN_SUCCESS);
         // 签到奖励
-       Reward signReward = service.selectRewardRandom(RewardPage.REWARD_SIGN, "=", 0, Config.SEASON);
-       RewardView.handOutReward(player, signReward);
+        Reward signReward = service.selectRewardRandom(RewardPage.REWARD_SIGN, "=", 0, Config.SEASON);
+        RewardView.handOutReward(player, signReward);
 
         // 累计签到
         service.updateSteveSignedAdd(player.getUniqueId());
