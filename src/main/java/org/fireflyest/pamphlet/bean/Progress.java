@@ -32,10 +32,6 @@ public class Progress {
     @Column
     private int reach;
 
-    // 任务总数
-    @Column
-    private int max;
-
     public int getId() {
         return id;
     }
@@ -82,14 +78,6 @@ public class Progress {
 
     public void setReach(int reach) {
         this.reach = reach;
-    }
-
-    public int getMax() {
-        return max;
-    }
-
-    public void setMax(int max) {
-        this.max = max;
     }
 
 }

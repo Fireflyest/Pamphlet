@@ -3,12 +3,12 @@
 # 任务类型
 # fishing mining trade
 first: 
-  - fishing
-  - mining
-  - trade
+  fishing: 3
+  mining: 30
+  trade: 1
 second: 
-  - aaa
+  aaa: 1
 third: 
-  - bbb
+  bbb: 1
 fourth: 
-  - ccc
+  ccc: 1

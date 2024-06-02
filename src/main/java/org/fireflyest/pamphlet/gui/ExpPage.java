@@ -90,7 +90,7 @@ public class ExpPage extends TemplatePage {
         this.addPlayerButton();
 
         // 左侧导航按钮
-        this.addNavigationButton(steve);
+        this.addNavigationButton();
 
         return asyncButtonMap;
     }
@@ -118,7 +118,7 @@ public class ExpPage extends TemplatePage {
     /**
      * 左侧导航
      */
-    private void addNavigationButton(Steve steve) {
+    private void addNavigationButton() {
         ItemStack expItem = new ItemBuilder(Material.ENCHANTED_BOOK)
             .name("&f[&a手册&f]")
             .lore("&fLv" + (steve.getExp() / 100))

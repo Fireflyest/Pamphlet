@@ -176,6 +176,10 @@ public class PamphletService extends SQLService {
         return seasonDao.selectSeasonIds();
     }
 
+    public long selectSeasonOutset(int id) {
+        return seasonDao.selectSeasonOutset(id);
+    }
+
     public long insertSeason(String name, ItemStack item) {
         return seasonDao.insertSeason(name, SerializationUtil.serialize(item));
     }

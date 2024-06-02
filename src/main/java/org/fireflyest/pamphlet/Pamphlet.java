@@ -153,7 +153,7 @@ public final class Pamphlet extends JavaPlugin {
         guide = rsp.getProvider();
 
         guide.addView(VIEW_EXP, new ExpView(service, guide));
-        guide.addView(VIEW_PROGRESS, new ProgressView(service));
+        guide.addView(VIEW_PROGRESS, new ProgressView(service, yaml));
         guide.addView(VIEW_EXCHANGE, new ExchangeView(service));
         guide.addView(VIEW_REWARD, new RewardView(service, guide));
         guide.addView(VIEW_EDIT, new EditView(service, guide));
