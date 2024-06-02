@@ -10,10 +10,13 @@ import javax.annotation.Nonnull;
 
 import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.NumberConversions;
 import org.fireflyest.craftgui.button.ButtonItemBuilder;
 import org.fireflyest.craftgui.view.TemplatePage;
 import org.fireflyest.craftitem.builder.ItemBuilder;
+import org.fireflyest.pamphlet.bean.Progress;
 import org.fireflyest.pamphlet.bean.Steve;
 import org.fireflyest.pamphlet.data.Config;
 import org.fireflyest.pamphlet.data.Language;
@@ -63,15 +66,15 @@ public class ProgressPage extends TemplatePage {
         Validate.notNull(steve, "player uuid:" + target + " data is null!");
 
         // 四个阶段的任务进度
-        this.addProgressButton("first", 9 * 2);
+        this.addProgressButton("stage1", 9 * 2);
         if (days > 30) {
-            this.addProgressButton("second", 9 * 3);
+            this.addProgressButton("stage2", 9 * 3);
         }
         if (days > 60) {
-            this.addProgressButton("third", 9 * 4);
+            this.addProgressButton("stage3", 9 * 4);
         }
         if (days > 90) {
-            this.addProgressButton("fourth", 9 * 5);
+            this.addProgressButton("stage4", 9 * 5);
         }
 
         // 左侧导航按钮
@@ -97,20 +100,38 @@ public class ProgressPage extends TemplatePage {
      * @param stage 阶段
      */
     private void addProgressButton(String stage, int index) {
+        int stageNum = NumberConversions.toInt(stage.replace("stage", ""));
         for (String key : yaml.getProgress().getConfigurationSection(stage).getKeys(false)) {
+            // 获取玩家进度
+            Progress progress = service.selectProgresses(target, stageNum, Config.SEASON, key);
+            if (progress == null) {
+                // 新进度数据
+                progress = new Progress(target, stageNum, Config.SEASON, key);
+                service.insertProgress(progress.getUid(), progress.getStage(), progress.getSeason(), progress.getType());
+            }
+            // 读取任务信息
             int max = yaml.getProgress().getInt(StringUtils.format("{}.{}", stage, key));
             Material material = progressMaterial.get(key);
             if (material == null) {
                 material = Material.BOOK;
             }
             String name = progressName.get(key);
-            // TODO: 进度
-            int reach = 1;
-            ItemStack item = new ItemBuilder(material)
-                .name("&e&l" + name)
-                .lore(StringUtils.format("&f{}/{}", String.valueOf(reach), String.valueOf(max)))
-                .lore(StringUtils.stringProgress((reach % max) / (double)max, "&7", "&a", 20))
-                .build();
+            int reach = progress.getReach();
+            ItemStack item = null;
+            if (reach == -1) { // 用-1来表示任务完成已领取奖励
+                item = new ItemBuilder(material)
+                    .name("&e&l" + name)
+                    .lore("&a✔")
+                    .flags(ItemFlag.HIDE_ATTRIBUTES)
+                    .build();
+            } else {
+                item = new ItemBuilder(material)
+                    .name("&e&l" + name)
+                    .lore(StringUtils.format("&f{}/{}", String.valueOf(reach), String.valueOf(max)))
+                    .lore(StringUtils.stringProgress((reach % max) / (double)max, "&7", "&a", 20))
+                    .flags(ItemFlag.HIDE_ATTRIBUTES)
+                    .build();
+            }
             asyncButtonMap.put(index++, item);
         }
     }

@@ -11,4 +11,9 @@ User: 'root'
 Password: '123456'
 
 # 周目
+# 创建周目手持物品输入/season create [name]
+# 更替周目/season alter [id]
 Season: 0
+
+# 使用签到日历作为主页
+Calendar: false

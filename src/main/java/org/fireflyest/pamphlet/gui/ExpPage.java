@@ -101,8 +101,8 @@ public class ExpPage extends TemplatePage {
         if (slot >= 45 && slot < 45 + 9) {
             selectLevel = outsetLevel + (slot % 45);
             outsetLevel = selectLevel > 6 ? selectLevel - 4 : 1;
+            guide.refreshPages(Pamphlet.VIEW_EXP, target);
         }
-        guide.refreshPages(Pamphlet.VIEW_EXP, target);
         return super.getItem(slot);
     }
 

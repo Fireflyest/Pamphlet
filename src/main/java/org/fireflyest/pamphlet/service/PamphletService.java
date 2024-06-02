@@ -6,13 +6,17 @@ import java.util.UUID;
 
 import org.bukkit.inventory.ItemStack;
 import org.fireflyest.craftdatabase.annotation.Auto;
+import org.fireflyest.craftdatabase.annotation.Insert;
 import org.fireflyest.craftdatabase.annotation.Service;
+import org.fireflyest.craftdatabase.annotation.Update;
 import org.fireflyest.craftdatabase.sql.SQLService;
 import org.fireflyest.pamphlet.bean.Diary;
+import org.fireflyest.pamphlet.bean.Progress;
 import org.fireflyest.pamphlet.bean.Reward;
 import org.fireflyest.pamphlet.bean.Season;
 import org.fireflyest.pamphlet.bean.Steve;
 import org.fireflyest.pamphlet.dao.DiaryDao;
+import org.fireflyest.pamphlet.dao.ProgressDao;
 import org.fireflyest.pamphlet.dao.RewardDao;
 import org.fireflyest.pamphlet.dao.SeasonDao;
 import org.fireflyest.pamphlet.dao.SteveDao;
@@ -39,6 +43,9 @@ public class PamphletService extends SQLService {
 
     @Auto
     public SeasonDao seasonDao;
+
+    @Auto
+    public ProgressDao progressDao;
     
     // *****************************************
     public Diary selectDiaryByTarget(String target) {
@@ -198,6 +205,20 @@ public class PamphletService extends SQLService {
 
     public long updateSeasonAdvanceAdd(int id) {
         return seasonDao.updateSeasonAdvanceAdd(id);
+    }
+
+
+    // *****************************************
+    public Progress selectProgresses(String uid, int stage, int season, String type) {
+        return progressDao.selectProgresses(uid, stage, season, type);
+    }
+
+    public long insertProgress(String uid, int stage, int season, String type) {
+        return progressDao.insertProgress(uid, stage, season, type);
+    }
+
+    public long updateProgressReachAdd(String uid, int season, String type) {
+        return progressDao.updateProgressReachAdd(uid, season, type);
     }
 
 }

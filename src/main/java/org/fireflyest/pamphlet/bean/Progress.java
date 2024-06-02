@@ -29,8 +29,18 @@ public class Progress {
     private String type;
 
     // 当前进度
-    @Column
+    @Column(defaultValue = "0")
     private int reach;
+
+    public Progress() {
+    }
+
+    public Progress(String uid, int stage, int season, String type) {
+        this.uid = uid;
+        this.stage = stage;
+        this.season = season;
+        this.type = type;
+    }
 
     public int getId() {
         return id;

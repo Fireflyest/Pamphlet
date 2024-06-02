@@ -2,13 +2,14 @@
 
 # 任务类型
 # fishing mining trade
-first: 
-  fishing: 3
+# 任务次数的最小值为2
+stage1: 
+  fishing: 3 
   mining: 30
-  trade: 1
-second: 
+  trade: 2
+stage2: 
   aaa: 1
-third: 
+stage3: 
   bbb: 1
-fourth: 
+stage4: 
   ccc: 1
