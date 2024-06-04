@@ -82,8 +82,8 @@ public class ExpPage extends TemplatePage {
             if (slotItem0 != null) asyncButtonMap.put(18 + j, slotItem0);
             ItemStack slotItem1 = rewardMap.get(i * 3 + 1L);
             if (slotItem1 != null) asyncButtonMap.put(27 + j, slotItem1);
-           ItemStack slotItem2 = rewardMap.get(i * 3 + 2L);
-           if (slotItem2 != null) asyncButtonMap.put(36 + j, slotItem2);
+            ItemStack slotItem2 = rewardMap.get(i * 3 + 2L);
+            if (slotItem2 != null) asyncButtonMap.put(36 + j, slotItem2);
         }
 
         // 右侧玩家操作按钮

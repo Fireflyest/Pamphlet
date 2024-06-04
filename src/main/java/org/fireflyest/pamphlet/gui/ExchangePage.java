@@ -8,9 +8,11 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.fireflyest.craftgui.button.ButtonItemBuilder;
 import org.fireflyest.craftgui.view.TemplatePage;
+import org.fireflyest.pamphlet.bean.Reward;
+import org.fireflyest.pamphlet.data.Config;
 import org.fireflyest.pamphlet.data.Language;
 import org.fireflyest.pamphlet.service.PamphletService;
-import org.fireflyest.util.StringUtils;
+import org.fireflyest.util.SerializationUtil;
 
 public class ExchangePage extends TemplatePage {
 
@@ -27,6 +29,14 @@ public class ExchangePage extends TemplatePage {
     public @Nonnull  Map<Integer, ItemStack> getItemMap() {
         asyncButtonMap.clear();
         asyncButtonMap.putAll(buttonMap);
+
+        int index = 18;
+        for (Reward reward : service.selectRewardByType(RewardPage.REWARD_EXCHANGE, Config.SEASON)) {
+            ItemStack slotItem = SerializationUtil.deserializeItemStack(reward.getItem());
+
+            asyncButtonMap.put(index++, slotItem);
+            if (index > 53) break;
+        }
 
         this.addNavigationButton();
 

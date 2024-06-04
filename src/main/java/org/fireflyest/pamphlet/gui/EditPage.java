@@ -251,6 +251,12 @@ public class EditPage extends TemplatePage {
             case RewardPage.REWARD_SEASON_PLAYTIME:
                 rewardTypeString = String.format("§f[§b周目总在线%s§f]", TimeUtils.duration(rewardNum));
                 break;
+            case RewardPage.REWARD_PROGRESS:
+                rewardTypeString = "§f[§b完成历练任务§f]";
+                break;
+            case RewardPage.REWARD_EXCHANGE:
+                rewardTypeString = String.format("§f[§b周目代币%s§f]", rewardNum);
+                break;
             default:
                 rewardTypeString = "§f[]";
                 break;

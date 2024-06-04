@@ -39,6 +39,7 @@ public class RewardPage extends TemplatePage {
     private int outsetLevel = 1;
     private static final String SLOT_NAME = "&f[&a&l↓&f]";
     private static final String DRAG_TIP = "&7请拖拽物品至此";
+    private static final String ACTION_PLUGIN = "{} {} {}";
 
     public static final String REWARD_LEVEL = "level";
     public static final String REWARD_SIGN = "sign";
@@ -46,6 +47,8 @@ public class RewardPage extends TemplatePage {
     public static final String REWARD_CUMULATIVE_SIGN = "cumulative_sign";
     public static final String REWARD_PLAYTIME = "playtime";
     public static final String REWARD_SEASON_PLAYTIME = "season_playtime";
+    public static final String REWARD_PROGRESS = "progress";
+    public static final String REWARD_EXCHANGE = "exchange";
 
     protected RewardPage(String target, PamphletService service, ViewGuide guide) {
         super(Language.TITLE_REWARD, target, 0, 54);
@@ -72,6 +75,9 @@ public class RewardPage extends TemplatePage {
             // 在线奖励
             this.addPlaytimeReward();
             this.addBlank();
+        } else if (rewardType == 3) {
+            // 兑换
+            this.addExchangeReward();
         }
 
         // 右侧赛季信息
@@ -94,10 +100,11 @@ public class RewardPage extends TemplatePage {
         if (slot >= 45 && slot < 45 + 9) {
             selectLevel = outsetLevel + (slot % 45);
             outsetLevel = selectLevel > 6 ? selectLevel - 4 : 1;
-        } else if (slot >= 0 && slot <= 2) {
+            guide.refreshPages(Pamphlet.VIEW_REWARD, target);
+        } else if (slot >= 0 && slot <= 3) {
             rewardType = slot;
+            guide.refreshPages(Pamphlet.VIEW_REWARD, target);
         }
-        guide.refreshPages(Pamphlet.VIEW_REWARD, target);
         return super.getItem(slot);
     }
 
@@ -128,7 +135,37 @@ public class RewardPage extends TemplatePage {
             .lore("&7奖励在奖池中随机抽取")
             .build();
         buttonMap.put(2, playtimeItem);
+        ItemStack exchangeItem = new ItemBuilder(Material.ITEM_FRAME)
+            .name("&f[&a兑换奖励&f]")
+            .lore("&7提升手册等级获取周目代币")
+            .lore("&7使用周目代币兑换奖励")
+            .build();
+        buttonMap.put(3, exchangeItem);
         
+    }
+
+    /**
+     * 添加兑换奖励
+     */
+    private void addExchangeReward() {
+        List<Reward> exchangeRewardList = Arrays.asList(service.selectRewardByType(REWARD_SEASON_PLAYTIME, seasonId));
+        int index = 18;
+        for (int i = 0; i < 36; i++) {
+            ItemStack slotItem;
+            if (i < exchangeRewardList.size()) {
+                Reward reward = exchangeRewardList.get(i);
+                slotItem = SerializationUtil.deserializeItemStack(reward.getItem());
+                this.loreItemDate(slotItem, reward);
+            } else {
+                slotItem  = new ButtonItemBuilder(Material.LIME_STAINED_GLASS_PANE)
+                    .actionPlugin(StringUtils.format(ACTION_PLUGIN, REWARD_EXCHANGE, 100, seasonId)) // type num season
+                    .name(SLOT_NAME)
+                    .lore("&7兑换奖励")
+                    .lore(DRAG_TIP)
+                    .build();
+            }
+            asyncButtonMap.put(index++, slotItem);
+        }
     }
 
     /**
@@ -147,7 +184,7 @@ public class RewardPage extends TemplatePage {
                 this.loreItemDate(slotItem1, reward);
             } else {
                 slotItem1  = new ButtonItemBuilder(Material.LIME_STAINED_GLASS_PANE)
-                    .actionPlugin(REWARD_PLAYTIME + " " + (1000 * 60 * 20) + " " + seasonId) // level num season
+                    .actionPlugin(StringUtils.format(ACTION_PLUGIN, REWARD_PLAYTIME, (1000 * 60 * 20), seasonId)) // type num season
                     .name(SLOT_NAME)
                     .lore("&7在线奖励")
                     .lore(DRAG_TIP)
@@ -162,7 +199,7 @@ public class RewardPage extends TemplatePage {
                 this.loreItemDate(slotItem2, reward);
             } else {
                 slotItem2 = new ButtonItemBuilder(Material.LIME_STAINED_GLASS_PANE)
-                    .actionPlugin(REWARD_SEASON_PLAYTIME + " " + (1000 * 60 * 60 * 48) + " " + seasonId) // level num season
+                    .actionPlugin(StringUtils.format(ACTION_PLUGIN, REWARD_SEASON_PLAYTIME, (1000 * 60 * 60 * 48), seasonId)) // type num season
                     .name(SLOT_NAME)
                     .lore("&7周目在线奖励")
                     .lore(DRAG_TIP)
@@ -200,7 +237,7 @@ public class RewardPage extends TemplatePage {
                 this.loreItemDate(slotItem0, reward);
             } else {
                  slotItem0 = new ButtonItemBuilder(Material.LIME_STAINED_GLASS_PANE)
-                    .actionPlugin(REWARD_SIGN + " 0 " + seasonId) // level num season
+                    .actionPlugin(StringUtils.format(ACTION_PLUGIN, REWARD_SIGN, 0, seasonId)) // type num season
                     .name(SLOT_NAME)
                     .lore("&7签到奖励")
                     .lore(DRAG_TIP)
@@ -222,7 +259,7 @@ public class RewardPage extends TemplatePage {
                 this.loreItemDate(slotItem1, reward);
             } else {
                 slotItem1  = new ButtonItemBuilder(Material.LIME_STAINED_GLASS_PANE)
-                    .actionPlugin(REWARD_SERIES_SIGN + " 3 " + seasonId) // level num season
+                    .actionPlugin(StringUtils.format(ACTION_PLUGIN, REWARD_SERIES_SIGN, 3, seasonId)) // type num season
                     .name(SLOT_NAME)
                     .lore("&7连续签到奖励")
                     .lore(DRAG_TIP)
@@ -237,7 +274,7 @@ public class RewardPage extends TemplatePage {
                 this.loreItemDate(slotItem2, reward);
             } else {
                 slotItem2 = new ButtonItemBuilder(Material.LIME_STAINED_GLASS_PANE)
-                    .actionPlugin(REWARD_CUMULATIVE_SIGN + " 7 " + seasonId) // level num season
+                    .actionPlugin(StringUtils.format(ACTION_PLUGIN, REWARD_CUMULATIVE_SIGN, 7, seasonId)) // type num season
                     .name(SLOT_NAME)
                     .lore("&7累计签到奖励")
                     .lore(DRAG_TIP)
@@ -291,7 +328,7 @@ public class RewardPage extends TemplatePage {
             ItemStack slotItem0 = rewardMap.get(num0);
             if (slotItem0 == null) {
                 slotItem0 = new ButtonItemBuilder(Material.LIME_STAINED_GLASS_PANE)
-                    .actionPlugin(type + " " + num0 + " " + seasonId) // level num season
+                    .actionPlugin(StringUtils.format(ACTION_PLUGIN, type, num0, seasonId)) // type num season
                     .name(SLOT_NAME)
                     .lore("&7基础奖励")
                     .lore(DRAG_TIP)
@@ -303,7 +340,7 @@ public class RewardPage extends TemplatePage {
             ItemStack slotItem1 = rewardMap.get(num1);
             if (slotItem1 == null) {
                 slotItem1 = new ButtonItemBuilder(Material.LIME_STAINED_GLASS_PANE)
-                    .actionPlugin(type + " " + num1 + " " + seasonId) // level num season
+                    .actionPlugin(StringUtils.format(ACTION_PLUGIN, type, num1, seasonId)) // type num season
                     .name(SLOT_NAME)
                     .lore("&7进阶奖励")
                     .lore(DRAG_TIP)
@@ -315,7 +352,7 @@ public class RewardPage extends TemplatePage {
             ItemStack slotItem2 = rewardMap.get(num2);
             if (slotItem2 == null) {
                 slotItem2 = new ButtonItemBuilder(Material.LIME_STAINED_GLASS_PANE)
-                    .actionPlugin(type + " " + num2 + " " + seasonId) // level num season
+                    .actionPlugin(StringUtils.format(ACTION_PLUGIN, type, num2, seasonId)) // type num season
                     .name(SLOT_NAME)    
                     .build();
             }
@@ -368,6 +405,12 @@ public class RewardPage extends TemplatePage {
                 break;
             case REWARD_SEASON_PLAYTIME:
                 rewardTypeString = String.format("§f[§b周目总在线%s§f]", TimeUtils.duration(reward.getNum()));
+                break;
+            case REWARD_PROGRESS:
+                rewardTypeString = "§f[§b完成历练任务§f]";
+                break;
+            case REWARD_EXCHANGE:
+                rewardTypeString = String.format("§f[§b周目代币%s§f]", reward.getNum());
                 break;
             default:
                 rewardTypeString = "§f[]";
