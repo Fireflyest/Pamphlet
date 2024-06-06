@@ -6,9 +6,7 @@ import java.util.UUID;
 
 import org.bukkit.inventory.ItemStack;
 import org.fireflyest.craftdatabase.annotation.Auto;
-import org.fireflyest.craftdatabase.annotation.Insert;
 import org.fireflyest.craftdatabase.annotation.Service;
-import org.fireflyest.craftdatabase.annotation.Update;
 import org.fireflyest.craftdatabase.sql.SQLService;
 import org.fireflyest.pamphlet.bean.Diary;
 import org.fireflyest.pamphlet.bean.Progress;
