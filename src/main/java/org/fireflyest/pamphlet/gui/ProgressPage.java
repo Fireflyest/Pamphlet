@@ -30,14 +30,18 @@ public class ProgressPage extends TemplatePage {
     private static final Map<String, String> progressName = new HashMap<>();
     private static final Map<String, Material> progressMaterial = new HashMap<>();
 
-    static {
-        progressName.put("fishing", "钓鱼");
-        progressName.put("mining", "挖矿");
-        progressName.put("trade", "村民交易");
+    public static final String PROGRESS_FISH = "fishing";
+    public static final String PROGRESS_MINING = "mining";
+    public static final String PROGRESS_TRADE = "trade";
 
-        progressMaterial.put("fishing", Material.FISHING_ROD);
-        progressMaterial.put("mining", Material.IRON_PICKAXE);
-        progressMaterial.put("trade", Material.EMERALD);
+    static {
+        progressName.put(PROGRESS_FISH, "钓鱼");
+        progressName.put(PROGRESS_MINING, "挖矿");
+        progressName.put(PROGRESS_TRADE, "村民交易");
+
+        progressMaterial.put(PROGRESS_FISH, Material.FISHING_ROD);
+        progressMaterial.put(PROGRESS_MINING, Material.IRON_PICKAXE);
+        progressMaterial.put(PROGRESS_TRADE, Material.EMERALD);
     }
 
     private final PamphletService service;

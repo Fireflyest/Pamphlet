@@ -30,7 +30,9 @@ import org.fireflyest.pamphlet.gui.ProgressView;
 import org.fireflyest.pamphlet.gui.RewardView;
 import org.fireflyest.pamphlet.gui.SeasonView;
 import org.fireflyest.pamphlet.listener.PlayerEventListener;
+import org.fireflyest.pamphlet.listener.TaskEventListener;
 import org.fireflyest.pamphlet.service.PamphletService;
+import org.fireflyest.pamphlet.task.ProgressTaskFactory;
 import org.fireflyest.util.TimeUtils;
 
 
@@ -82,6 +84,8 @@ public final class Pamphlet extends JavaPlugin {
     public static final String VIEW_EDIT = "pamphlet.edit";
     public static final String VIEW_SEASON = "pamphlet.season";
 
+    public static final String TASK_PROGRESS = "pamphlet.progress";
+
     public static Pamphlet getPlugin() {
         return getPlugin(Pamphlet.class);
     }
@@ -110,7 +114,7 @@ public final class Pamphlet extends JavaPlugin {
         // listener
         this.getLogger().info("Lunching listener.");
         this.getServer().getPluginManager().registerEvents(new PlayerEventListener(service, guide), this);
-        // this.getServer().getPluginManager().registerEvents(new TaskEventListener(service), this);
+        this.getServer().getPluginManager().registerEvents(new TaskEventListener(handler), this);
 
         
         // commands
@@ -165,6 +169,8 @@ public final class Pamphlet extends JavaPlugin {
             return;
         }
         handler = hrsp.getProvider();
+
+        handler.prepareTask(TASK_PROGRESS, new ProgressTaskFactory(service));
     }
     
     private void setupCommand() {

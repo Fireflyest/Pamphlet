@@ -148,14 +148,14 @@ public class RewardPage extends TemplatePage {
      * 添加兑换奖励
      */
     private void addExchangeReward() {
-        List<Reward> exchangeRewardList = Arrays.asList(service.selectRewardByType(REWARD_SEASON_PLAYTIME, seasonId));
+        List<Reward> exchangeRewardList = Arrays.asList(service.selectRewardByType(REWARD_EXCHANGE, seasonId));
         int index = 18;
         for (int i = 0; i < 36; i++) {
             ItemStack slotItem;
             if (i < exchangeRewardList.size()) {
                 Reward reward = exchangeRewardList.get(i);
                 slotItem = SerializationUtil.deserializeItemStack(reward.getItem());
-                this.loreItemDate(slotItem, reward);
+                this.loreItemData(slotItem, reward);
             } else {
                 slotItem  = new ButtonItemBuilder(Material.LIME_STAINED_GLASS_PANE)
                     .actionPlugin(StringUtils.format(ACTION_PLUGIN, REWARD_EXCHANGE, 100, seasonId)) // type num season
@@ -181,7 +181,7 @@ public class RewardPage extends TemplatePage {
             if (i < playtimeRewardList.size()) {
                 Reward reward = playtimeRewardList.get(i);
                 slotItem1 = SerializationUtil.deserializeItemStack(reward.getItem());
-                this.loreItemDate(slotItem1, reward);
+                this.loreItemData(slotItem1, reward);
             } else {
                 slotItem1  = new ButtonItemBuilder(Material.LIME_STAINED_GLASS_PANE)
                     .actionPlugin(StringUtils.format(ACTION_PLUGIN, REWARD_PLAYTIME, (1000 * 60 * 20), seasonId)) // type num season
@@ -196,7 +196,7 @@ public class RewardPage extends TemplatePage {
             if (i < seasonRewardList.size()) {
                 Reward reward = seasonRewardList.get(i);
                 slotItem2 = SerializationUtil.deserializeItemStack(reward.getItem());
-                this.loreItemDate(slotItem2, reward);
+                this.loreItemData(slotItem2, reward);
             } else {
                 slotItem2 = new ButtonItemBuilder(Material.LIME_STAINED_GLASS_PANE)
                     .actionPlugin(StringUtils.format(ACTION_PLUGIN, REWARD_SEASON_PLAYTIME, (1000 * 60 * 60 * 48), seasonId)) // type num season
@@ -234,7 +234,7 @@ public class RewardPage extends TemplatePage {
             if (i < signRewardList.size()) {
                 Reward reward = signRewardList.get(i);
                 slotItem0 = SerializationUtil.deserializeItemStack(reward.getItem());
-                this.loreItemDate(slotItem0, reward);
+                this.loreItemData(slotItem0, reward);
             } else {
                  slotItem0 = new ButtonItemBuilder(Material.LIME_STAINED_GLASS_PANE)
                     .actionPlugin(StringUtils.format(ACTION_PLUGIN, REWARD_SIGN, 0, seasonId)) // type num season
@@ -256,7 +256,7 @@ public class RewardPage extends TemplatePage {
             if (i < seriesRewardList.size()) {
                 Reward reward = seriesRewardList.get(i);
                 slotItem1 = SerializationUtil.deserializeItemStack(reward.getItem());
-                this.loreItemDate(slotItem1, reward);
+                this.loreItemData(slotItem1, reward);
             } else {
                 slotItem1  = new ButtonItemBuilder(Material.LIME_STAINED_GLASS_PANE)
                     .actionPlugin(StringUtils.format(ACTION_PLUGIN, REWARD_SERIES_SIGN, 3, seasonId)) // type num season
@@ -271,7 +271,7 @@ public class RewardPage extends TemplatePage {
             if (i < cumulativeRewardList.size()) {
                 Reward reward = cumulativeRewardList.get(i);
                 slotItem2 = SerializationUtil.deserializeItemStack(reward.getItem());
-                this.loreItemDate(slotItem2, reward);
+                this.loreItemData(slotItem2, reward);
             } else {
                 slotItem2 = new ButtonItemBuilder(Material.LIME_STAINED_GLASS_PANE)
                     .actionPlugin(StringUtils.format(ACTION_PLUGIN, REWARD_CUMULATIVE_SIGN, 7, seasonId)) // type num season
@@ -310,7 +310,7 @@ public class RewardPage extends TemplatePage {
         // 获取所有奖励
         for (Reward reward : service.selectRewardByType(REWARD_LEVEL, seasonId)) {
             ItemStack rewardItem = SerializationUtil.deserializeItemStack(reward.getItem());
-            this.loreItemDate(rewardItem, reward);
+            this.loreItemData(rewardItem, reward);
             rewardMap.put(reward.getNum(), rewardItem);
         }
         outsetLevel = selectLevel > 6 ? selectLevel - 4 : 1;
@@ -377,7 +377,7 @@ public class RewardPage extends TemplatePage {
      * @param item 物品
      * @param reward 奖励
      */
-    private void loreItemDate(ItemStack item, Reward reward) {
+    private void loreItemData(ItemStack item, Reward reward) {
         // 重命名
         if (reward.getName() != null) {
             ItemUtils.setDisplayName(item, reward.getName());

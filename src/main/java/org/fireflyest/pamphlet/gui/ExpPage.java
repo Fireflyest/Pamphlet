@@ -1,6 +1,7 @@
 package org.fireflyest.pamphlet.gui;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -11,6 +12,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.NumberConversions;
 import org.fireflyest.craftgui.api.ViewGuide;
+import org.fireflyest.craftgui.button.ButtonAction;
 import org.fireflyest.craftgui.button.ButtonItemBuilder;
 import org.fireflyest.craftgui.view.TemplatePage;
 import org.fireflyest.craftitem.builder.ItemBuilder;
@@ -21,9 +23,13 @@ import org.fireflyest.pamphlet.bean.Steve;
 import org.fireflyest.pamphlet.data.Config;
 import org.fireflyest.pamphlet.data.Language;
 import org.fireflyest.pamphlet.service.PamphletService;
+import org.fireflyest.util.ItemUtils;
 import org.fireflyest.util.SerializationUtil;
 import org.fireflyest.util.StringUtils;
 import org.fireflyest.util.TimeUtils;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 public class ExpPage extends TemplatePage {
 
@@ -175,6 +181,38 @@ public class ExpPage extends TemplatePage {
             .lore(String.format("&f周目总在线&9%s", TimeUtils.duration(seasonPlaytime)))
             .build();
         asyncButtonMap.put(7, playtimeItem);
+    }
+
+
+    /**
+     * 奖励物品注释
+     * @param item 物品
+     * @param reward 奖励
+     */
+    private void loreItemData(ItemStack item, Reward reward) {
+        // 重命名
+        if (reward.getName() != null) {
+            ItemUtils.setDisplayName(item, reward.getName());
+        }
+        // 分割线
+        ItemUtils.addLore(item, "");
+        ItemUtils.addLore(item, "§e§m·                         ·");
+        // 奖励类型
+        String rewardTypeString = String.format("§f[§b手册等级达到%s§f]", reward.getNum() / 3);
+        ItemUtils.addLore(item, rewardTypeString);
+        String rewardResult = reward.getCommands() == null ? "§f获取当前物品" : "§f执行以下指令";
+        ItemUtils.addLore(item, rewardResult);
+        // 奖励指令
+        if (reward.getCommands() != null) {
+            Gson gson = new Gson();
+            List<String> commandsList = gson.fromJson(reward.getCommands(), new TypeToken<List<String>>() {}.getType());
+            for (String command : commandsList) {
+                ItemUtils.addLore(item, "§f - §7/" + command);
+            }
+        }
+        // 按钮
+        // ItemUtils.setItemNbt(item, ButtonAction.NBT_ACTION_KEY, ButtonAction.ACTION_PAGE_OPEN);
+        // ItemUtils.setItemNbt(item, ButtonAction.NBT_VALUE_KEY, Pamphlet.VIEW_EDIT + "." + reward.getId());
     }
     
 }

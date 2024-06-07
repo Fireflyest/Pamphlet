@@ -8,6 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.fireflyest.craftgui.button.ButtonItemBuilder;
 import org.fireflyest.craftgui.view.TemplatePage;
+import org.fireflyest.craftitem.builder.ItemBuilder;
 import org.fireflyest.pamphlet.bean.Reward;
 import org.fireflyest.pamphlet.data.Config;
 import org.fireflyest.pamphlet.data.Language;
@@ -45,7 +46,10 @@ public class ExchangePage extends TemplatePage {
 
     @Override
     public void refreshPage() {
-        // 
+        ItemStack blank = new ItemBuilder(Material.WHITE_STAINED_GLASS_PANE).name(" ").build();
+        for (int i = 9; i < 18; i++) {
+            buttonMap.put(i, blank);
+        }
     }
     
     /**

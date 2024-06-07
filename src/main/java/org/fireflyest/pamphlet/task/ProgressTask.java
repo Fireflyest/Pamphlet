@@ -21,6 +21,7 @@ public class ProgressTask extends PrepareTask {
         Validate.notNull(service, "The data service is null!");
         if (values.length == 2) {
             service.updateProgressReachAdd(String.valueOf(values[0]), Config.SEASON, String.valueOf(values[1]));
+            // 任务是否完成
         }
     }
 
