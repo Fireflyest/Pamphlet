@@ -133,7 +133,7 @@ public class PamphletService extends SQLService {
     }
 
     public int selectSteveSeriesByUid(UUID uid) {
-        return steveDao.selectSteveSignedByUid(uid.toString());
+        return steveDao.selectSteveSeriesByUid(uid.toString());
     }
 
     public int selectSteveSeasonByUid(UUID uid) {

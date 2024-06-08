@@ -23,7 +23,7 @@ public class Reward {
     @Column
     private int season;
 
-    // 奖励位置
+    // 奖励位置或领取条件
     @Column
     private long num;
 
