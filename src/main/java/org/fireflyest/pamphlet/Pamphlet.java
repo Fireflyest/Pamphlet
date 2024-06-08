@@ -12,6 +12,7 @@ import org.fireflyest.craftdatabase.sql.SQLConnector;
 import org.fireflyest.craftgui.api.ViewGuide;
 import org.fireflyest.crafttask.api.TaskHandler;
 import org.fireflyest.pamphlet.bean.Diary;
+import org.fireflyest.pamphlet.command.GainCommand;
 import org.fireflyest.pamphlet.command.PamphletCommand;
 import org.fireflyest.pamphlet.command.PlaytimeCommand;
 import org.fireflyest.pamphlet.command.RewardCommand;
@@ -181,9 +182,11 @@ public final class Pamphlet extends JavaPlugin {
             PlaytimeCommand playtimeCommand = new PlaytimeCommand(service, guide);
             RewardCommand rewardCommand = new RewardCommand(guide);
             rewardCommand.setArgument(0, new NumberArgs());
+            GainCommand gainCommand = new GainCommand(service);
             pamphletCommand.addSubCommand("sign", signCommand);
             pamphletCommand.addSubCommand("playtime", playtimeCommand);
             pamphletCommand.addSubCommand("reward", rewardCommand);
+            pamphletCommand.addSubCommand("gain", gainCommand);
             pamphlet.setExecutor(pamphletCommand);
             pamphlet.setTabCompleter(pamphletCommand);
         }

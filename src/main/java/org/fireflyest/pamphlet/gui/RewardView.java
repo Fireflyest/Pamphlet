@@ -114,6 +114,8 @@ public class RewardView implements View<RewardPage> {
                 return "当天在线" + TimeUtils.duration(reward.getNum());
             case RewardPage.REWARD_SEASON_PLAYTIME:
                 return "周目累计在线" + TimeUtils.duration(reward.getNum());
+            case RewardPage.REWARD_LEVEL:
+                return "周目等级" + (reward.getNum() / 3) + "#" + (reward.getNum() % 3);
             default:
                 break;
         }

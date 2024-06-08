@@ -136,12 +136,24 @@ public class PamphletService extends SQLService {
         return steveDao.selectSteveSeriesByUid(uid.toString());
     }
 
+    public int selectSteveExpByUid(UUID uid) {
+        return steveDao.selectSteveExpByUid(uid.toString());
+    }
+
+    public int selectSteveGainByUid(UUID uid) {
+        return steveDao.selectSteveGainByUid(uid.toString());
+    }
+
     public int selectSteveSeasonByUid(UUID uid) {
         return steveDao.selectSteveSeasonByUid(uid.toString());
     }
 
     public long insertSteve(UUID uid, String name, int season) {
         return steveDao.insertSteve(uid.toString(), name, season);
+    }
+
+    public long updateSteveGainAdd(UUID uid) {
+        return steveDao.updateSteveGainAdd(uid.toString());
     }
 
     public long updateSteveSignedAdd(UUID uid) {

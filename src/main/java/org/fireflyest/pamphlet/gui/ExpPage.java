@@ -66,14 +66,19 @@ public class ExpPage extends TemplatePage {
         outsetLevel = selectLevel > 6 ? selectLevel - 4 : 1;
         for (int i = outsetLevel, j = 0; i < outsetLevel + 9; i++, j++) {
             // 等级进度按钮
+            boolean hasCommand = false;
             Material levelMaterial = Material.BLACK_STAINED_GLASS_PANE;
             if (i <= steve.getGain()) {
                 levelMaterial = Material.LIGHT_BLUE_STAINED_GLASS_PANE;
             } else if (i <= level) {
+                hasCommand = true;
                 levelMaterial = Material.LIME_STAINED_GLASS_PANE;
             }
-            ItemStack levelButton = new ItemBuilder(levelMaterial)
-                .name("&aLv&f" + i)
+            ButtonItemBuilder levelButtonBuilder = new ButtonItemBuilder(levelMaterial);
+            if (hasCommand) {
+                levelButtonBuilder.actionPlayerCommand("pamphlet gain").lore("&7点击领取奖励");
+            }
+            ItemStack levelButton = levelButtonBuilder.name("&aLv&f" + i)
                 .lore("&7点击调整显示位置")
                 .amount(i)
                 .build();
